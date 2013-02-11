@@ -1,0 +1,22 @@
+#######################################
+# Zsh xconfig                         #
+# Made by shaoner <shaoner@gmail.com> #
+#######################################
+
+ZSH_ROOT=$HOME/.zsh.d
+
+source ${ZSH_ROOT}/env.zshrc
+source ${ZSH_ROOT}/options.zshrc
+source ${ZSH_ROOT}/alias.zshrc
+source ${ZSH_ROOT}/functions.zshrc
+source ${ZSH_ROOT}/completion.zshrc
+source ${ZSH_ROOT}/history.zshrc
+source ${ZSH_ROOT}/keys.zshrc
+source ${ZSH_ROOT}/prompt.zshrc
+
+# Windows' title
+case $TERM in
+   xterm*|rxvt*)
+       precmd () {print -Pn "\e]0;%n@%m: %~\a"}
+       ;;
+esac

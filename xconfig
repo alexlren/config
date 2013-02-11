@@ -1,0 +1,141 @@
+#! /bin/sh
+
+XCONFIG_ROOT=$(readlink -f $0)
+XCONFIG_ROOT=$(dirname ${XCONFIG_ROOT})
+XCONFIG_RESOURCES=${XCONFIG_ROOT}/resources
+
+usage()
+{
+    echo "Usage: xconfig COMMAND"
+    echo "Install a configuration directory in your HOME."
+    echo
+    echo -e "  help"
+    echo -e "\tDisplay this help"
+    echo -e "  list"
+    echo -e "\tList configurations"
+    echo -e "  install CONFIG"
+    echo -e "\tCopy the required configuration CONFIG in your HOME"
+    echo -e "  uninstall CONFIG"
+    echo -e "\tRemove the required configuration CONFIG from your HOME"
+}
+
+list_config()
+{
+    echo "Configuration:"
+    for r in ${XCONFIG_RESOURCES}/*
+    do
+        echo "* $(basename $r)"
+    done
+}
+
+install_config()
+{
+    CONFIG=$1
+    if [ ! -d "${XCONFIG_RESOURCES}/${CONFIG}" ]
+    then
+        echo "No such configuration ${CONFIG}"
+        return 1
+    fi
+    if [ -f "${XCONFIG_RESOURCES}/${CONFIG}/pre-hook.sh" ]
+    then
+        sh -x "${XCONFIG_RESOURCES}/${CONFIG}/pre-hook.sh"
+    fi
+    for c in $(find "${XCONFIG_RESOURCES}/${CONFIG}" -maxdepth 1 -mindepth 1)
+    do
+        myc=$(basename $c)
+        ext=$(echo $c | rev | cut -d'.' -f1 | rev)
+        if [ "$ext" = "shared" ]
+        then
+            CMD="ln -s"
+            myc=${myc%%.shared}
+        elif [ "$ext" = "private" ]
+        then
+            CMD="cp -r"
+            myc=${myc%%.private}
+        else
+            continue
+        fi
+        CMD="${CMD} $c ${HOME}/$myc"
+        if [ -e "${HOME}/$myc" ] && [ ! -h "${HOME}/$myc" ]
+        then
+            echo -n "Override ${HOME}/$myc ? [y/N] "
+            read ANSWER
+            if [ "${ANSWER}" != "y" ]
+            then
+                continue
+            fi
+        fi
+        rm -rf "${HOME}/$myc" 2>&1 >/dev/null
+        echo "=> $CMD"
+        eval $CMD
+    done
+    if [ -f "${XCONFIG_RESOURCES}/${CONFIG}/post-hook.sh" ]
+    then
+        sh -x "${XCONFIG_RESOURCES}/${CONFIG}/post-hook.sh"
+    fi
+}
+
+uninstall_config()
+{
+    CONFIG=$1
+    if [ ! -d "${XCONFIG_RESOURCES}/${CONFIG}" ]
+    then
+        echo "No such configuration ${CONFIG}"
+        return 1
+    fi
+    for c in $(find "${XCONFIG_RESOURCES}/${CONFIG}" -maxdepth 1 -mindepth 1)
+    do
+        myc=$(basename $c)
+        if [ "${c%%.shared}" != "$c" ]
+        then
+            myc=${myc%%.shared}
+            rm -f "${HOME}/$myc"
+        elif [ "${c%%.private}" != "$c" ]
+        then
+            myc=${myc%%.private}
+            rm -rf "${HOME}/$myc" 2>&1 >/dev/null
+        else
+            continue
+        fi
+    done
+}
+
+if [ $# -eq 0 ]
+then
+    usage
+    exit 1
+fi
+
+RET=0
+case $1 in
+    "help")
+        usage
+        ;;
+    "list")
+        list_config
+        ;;
+    "install")
+        if [ $# -ne 2 ]
+        then
+            usage
+            exit 1
+        fi
+        install_config $2
+        RET=$?
+        ;;
+    "uninstall")
+        if [ $# -ne 2 ]
+        then
+            usage
+            exit 1
+        fi
+        uninstall_config $2
+        RET=$?
+        ;;
+    *)
+        echo "Command not found: $1" 1>&2
+        usage
+        exit 1
+        ;;
+esac
+exit $RET

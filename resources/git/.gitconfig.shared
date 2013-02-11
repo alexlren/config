@@ -1,0 +1,21 @@
+[alias]
+        ci = commit
+  	a = add
+  	co = checkout
+	st = status
+  	br = branch
+  	l = log --graph --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s'
+        last = log -1 HEAD
+        recommit = commit --amend
+        reci = commit --amend
+        unstage = reset HEAD --
+        bron = !sh -c 'git checkout -b local/$1 origin/$1' -
+        pullsubs = submodule foreach "git pull origin master"
+[color]
+	ui = auto
+[include]
+        path = ~/.gitconfig.d/user.conf
+[core]
+	editor = emacsclient -a \"\" -t
+[merge]
+	tool = meld
