@@ -339,6 +339,9 @@
   ido-enable-flex-matching t
   ido-case-fold  t)
 (setq confirm-nonexistent-file-or-buffer nil)
+;; Scala
+(add-to-list 'load-path "~/.emacs.d/scala-mode")
+(require 'scala-mode-auto)
 ;; Look & feel
 (load "customize")
 
