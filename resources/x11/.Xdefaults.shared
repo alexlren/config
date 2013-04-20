@@ -7,7 +7,7 @@ xterm*saveLines: 2000
 xterm*charClass: 33:48,35:48,37:48,43:48,45-47:48,64:48,95:48,126:48,35:48
 xterm*termName: xterm-256color
 xterm*eightBitInput: 0
-xterm*foreground: rgb:a8/a8/a8
+xterm*foreground: rgb:ff/ff/ff
 xterm*background: rgb:00/00/00
 xterm*scrollBar: 0
 xterm*scrollKey: 1
