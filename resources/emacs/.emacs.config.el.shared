@@ -343,28 +343,28 @@
   ido-case-fold  t)
 (setq confirm-nonexistent-file-or-buffer nil)
 ;; Scala
-(add-to-list 'load-path "~/.emacs.d/scala-mode2")
-(require 'scala-mode2)
+;;(add-to-list 'load-path "~/.emacs.d/scala-mode2")
+;;(require 'scala-mode2)
 ;; Ensime
-(add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
-(require 'ensime)
-(add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-(setq ensime-sem-high-faces
-      '(
-        (var . (:foreground "#ff2222"))
-        (val . (:foreground "#111111"))
-        (varField . (:foreground "#ff6666"))
-        (valField . (:foreground "#666666"))
-        (functionCall . (:foreground "#84BEE3"))
-        (param . (:foreground "#111111"))
-        (class . font-lock-type-face)
-        (trait . (:foreground "#084EA8"))
-        (object . (:foreground "#026DF7"))
-        (package . font-lock-preprocessor-face)))
+;; (add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
+;; (require 'ensime)
+;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
+;; (setq ensime-sem-high-faces
+;;       '(
+;;         (var . (:foreground "#ff2222"))
+;;         (val . (:foreground "#111111"))
+;;         (varField . (:foreground "#ff6666"))
+;;         (valField . (:foreground "#666666"))
+;;         (functionCall . (:foreground "#84BEE3"))
+;;         (param . (:foreground "#111111"))
+;;         (class . font-lock-type-face)
+;;         (trait . (:foreground "#084EA8"))
+;;         (object . (:foreground "#026DF7"))
+;;         (package . font-lock-preprocessor-face)))
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(setq nox-theme 'default-nox)
+(setq nox-theme 'monokai-nox)
 (setq x-theme 'default-x)
 
 (if (window-system)

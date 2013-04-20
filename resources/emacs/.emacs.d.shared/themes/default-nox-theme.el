@@ -1,8 +1,8 @@
-(deftheme shaoner
+(deftheme default-nox
   "Created 2013-04-04.")
 
 (custom-theme-set-variables
- 'shaoner
+ 'default-nox
  '(after-save-hook (quote (executable-make-buffer-file-executable-if-script-p)))
  '(ido-auto-merge-work-directories-length -1)
  '(ido-confirm-unique-completion t)
@@ -16,8 +16,8 @@
  '(ido-everywhere t))
 
 (custom-theme-set-faces
- 'shaoner
- '(default ((t (:stipple nil :foreground "gray88" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 123 :width normal :foundry "unknown" :family "xos4-terminus"))))
+ 'default-nox
+ '(default ((t (:stipple nil :foreground "white" :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 123 :width normal :foundry "unknown" :family "xos4-terminus"))))
  '(font-lock-builtin-face ((((class color) (background dark)) (:foreground "Turquoise"))))
  '(font-lock-comment-face ((t (:foreground "MediumAquamarine"))))
  '(font-lock-constant-face ((((class color) (background dark)) (:bold t :foreground "DarkOrchid"))))
@@ -39,4 +39,4 @@
  '(speedbar-tag-face ((((class color) (background dark)) (:foreground "Springgreen"))))
  '(widget-field ((((class grayscale color) (background light)) (:background "DarkBlue")))))
 
-(provide-theme 'shaoner)
+(provide-theme 'default-nox)

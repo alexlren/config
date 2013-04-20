@@ -3,7 +3,7 @@
 
 (custom-theme-set-faces
  'default-x
- '(default ((t (:family "Ubuntu Mono" :foundry "unknown" :width normal :height 130 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "white" :background "#272822" :stipple nil :inherit nil))))
+ '(default ((t (:family "Monospace" :foundry "unknown" :width normal :height 100 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "white" :background "#272822" :stipple nil :inherit nil))))
  '(cursor ((((background light)) (:background "black")) (((background dark)) (:background "white"))))
  '(fixed-pitch ((t (:family "Monospace"))))
  '(variable-pitch ((t (:family "Sans Serif"))))
