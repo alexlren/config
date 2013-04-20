@@ -4,7 +4,7 @@
   	co = checkout
 	st = status
   	br = branch
-  	l = log --graph --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s'
+  	l = log --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s'
         last = log -1 HEAD
         recommit = commit --amend
         reci = commit --amend
