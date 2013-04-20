@@ -8,8 +8,9 @@
 # -------
 
 # History lines
-export HISTORY=1000
-export SAVEHIST=1000
+export HISTORY=50000
+export SAVEHIST=$HISTORY
+export HISTSIZE=$HISTORY
 
 # Path to history file
 export HISTFILE=$HOME/.history
