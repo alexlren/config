@@ -75,11 +75,6 @@
 (setq show-paren-face 'modeline)
 ;; Picture mode
 (auto-image-file-mode)
-;; Don't indent with tabs
-(setq-default indent-tabs-mode nil)
-;; Indent space = 2
-(setq tab-width 2)
-(setq standard-indent 2)
 ;; Coding system
 (setq selection-coding-system 'compound-text-with-extensions)
 ;; Gdb
@@ -89,7 +84,10 @@
 (setq compilation-scroll-output t)
 ;; Enable upcase
 (put 'upcase-region 'disabled nil)
-
+;; Tabs
+(setq-default tab-width 4)
+(setq-default indent-tabs-mode t)
+   ;;(setq standard-indent 2)
 ;;-----------------------------------
 ;; KEY SHORTCUTS
 ;;-----------------------------------
@@ -153,8 +151,9 @@
 ;;-----------------------------------
 
 ;; C
-(setq c-default-style "bsd")
-(setq c-basic-offset 2)
+(setq c-default-style "linux")
+(setq c-basic-offset 4)
+;;(setq c-syntactic-indentation nil)
 (add-hook 'find-file-hooks
           (lambda ()
             (when (and (memq major-mode '(c-mode c++-mode)) (equal (point-min) (point-max)) (string-match ".*\\.hh?" (buffer-file-name)))
