@@ -89,6 +89,8 @@
 (setq compilation-scroll-output t)
 ;; Enable upcase
 (put 'upcase-region 'disabled nil)
+;; Linum space separator
+(setq linum-format "%d ")
 
 ;;-----------------------------------
 ;; KEY SHORTCUTS
