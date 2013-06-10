@@ -18,7 +18,8 @@
 	br = branch --verbose --abbrev
 	bra = branch -a --verbose --abbrev
 	# Logs
-  	l = log --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s'
+	lo = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s'
+  	l = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s' -10
 	last = log --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s' -1 HEAD
 	# Status
 	sdiff = diff --cached
