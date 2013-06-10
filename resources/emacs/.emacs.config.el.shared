@@ -84,10 +84,13 @@
 (setq compilation-scroll-output t)
 ;; Enable upcase
 (put 'upcase-region 'disabled nil)
+;; Linum space separator
+(setq linum-format "%d ")
 ;; Tabs
 (setq-default tab-width 4)
 (setq-default indent-tabs-mode t)
    ;;(setq standard-indent 2)
+
 ;;-----------------------------------
 ;; KEY SHORTCUTS
 ;;-----------------------------------
