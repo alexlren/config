@@ -148,6 +148,10 @@
             ;; Gdb
             (define-key c-mode-map (kbd "<f7>") 'gdb))
           )
+;; Indent case
+(add-hook 'c-mode-common-hook
+          (lambda ()
+			(c-set-offset 'case-label 4)))
 
 ;;-----------------------------------
 ;; CONFIGURATION
@@ -186,10 +190,10 @@
               (goto-char (point-max)))))
 
 ;; Python
-(add-hook 'awk-mode-hook
+(add-hook 'python-mode-hook
           (lambda ()
             (when (equal (point-min) (point-max))
-              (insert-shebang "/usr/bin/env python3")
+              (insert-shebang "/usr/bin/env python")
               (goto-char (point-max)))))
 
 
@@ -372,7 +376,6 @@
 (if (window-system)
     (load-theme x-theme t)
   (load-theme nox-theme t))
-
 
 ;;-----------------------------------
 ;; FILE EXT
