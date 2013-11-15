@@ -84,7 +84,7 @@ uninstall_config()
 		echo "Remove the configuration files manually"
         return 1
     fi
-	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/{share,local}" -maxdepth 1 -mindepth 1 2>/dev/null)
+	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/share" "$XCONFIG_RESOURCES/$CONFIG/local" -maxdepth 1 -mindepth 1 2>/dev/null)
 	do
 		c=$(basename $conf)
         rm -rf "$HOME/$c"
