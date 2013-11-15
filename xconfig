@@ -1,8 +1,8 @@
 #! /bin/sh
 
 XCONFIG_ROOT=$(readlink -f $0)
-XCONFIG_ROOT=$(dirname ${XCONFIG_ROOT})
-XCONFIG_RESOURCES=${XCONFIG_ROOT}/resources
+XCONFIG_ROOT=$(dirname "$XCONFIG_ROOT")
+XCONFIG_RESOURCES="$XCONFIG_ROOT/resources"
 
 usage()
 {
@@ -31,73 +31,64 @@ list_config()
 install_config()
 {
     CONFIG=$1
-    if [ ! -d "${XCONFIG_RESOURCES}/${CONFIG}" ]
+    if [ ! -d "$XCONFIG_RESOURCES/$CONFIG" ]
     then
-        echo "No such configuration ${CONFIG}"
+        echo "No such configuration $CONFIG"
         return 1
     fi
-    if [ -f "${XCONFIG_RESOURCES}/${CONFIG}/pre-hook.sh" ]
+	# Pre install hook
+    if [ -f "$XCONFIG_RESOURCES/$CONFIG/hooks/pre-install.sh" ]
     then
-        sh -x "${XCONFIG_RESOURCES}/${CONFIG}/pre-hook.sh"
+        sh -x "$XCONFIG_RESOURCES/$CONFIG/hooks/pre-install.sh"
     fi
-    for c in $(find "${XCONFIG_RESOURCES}/${CONFIG}" -maxdepth 1 -mindepth 1)
-    do
-        myc=$(basename $c)
-        ext=$(echo $c | rev | cut -d'.' -f1 | rev)
-        if [ "$ext" = "shared" ]
+	# Install shared config
+	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/share" -maxdepth 1 -mindepth 1 2>/dev/null)
+	do
+		c=$(basename $conf)
+		# Override existing config anyway
+		if [ -e "$HOME/$c" ]
+		then
+			rm -rf "$HOME/$c"
+		fi
+		ln -s "$XCONFIG_RESOURCES/$CONFIG/share/$c" "$HOME/$c"
+	done
+	# Install local config
+	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/local" -maxdepth 1 -mindepth 1 2>/dev/null)
+	do
+		c=$(basename $conf)
+		# Remove old config?
+        if [ -e "$HOME/$c" ]
         then
-            CMD="ln -s"
-            myc=${myc%%.shared}
-        elif [ "$ext" = "private" ]
-        then
-            CMD="cp -r"
-            myc=${myc%%.private}
-        else
-            continue
-        fi
-        CMD="${CMD} $c ${HOME}/$myc"
-        if [ -e "${HOME}/$myc" ] && [ ! -h "${HOME}/$myc" ]
-        then
-            echo -n "Override ${HOME}/$myc ? [y/N] "
+            echo -n "Override $HOME/$c ? [y/N] "
             read ANSWER
-            if [ "${ANSWER}" != "y" ]
+            if [ "$ANSWER" != "y" ]
             then
                 continue
             fi
         fi
-        rm -rf "${HOME}/$myc" 2>&1 >/dev/null
-        echo "=> $CMD"
-        eval $CMD
-    done
-    if [ -f "${XCONFIG_RESOURCES}/${CONFIG}/post-hook.sh" ]
+		rm -f "$HOME/$c"
+		cp -r "$XCONFIG_RESOURCES/$CONFIG/local/$c" "$HOME/$c"
+	done
+    if [ -f "$XCONFIG_RESOURCES/$CONFIG/hooks/post-install.sh" ]
     then
-        sh -x "${XCONFIG_RESOURCES}/${CONFIG}/post-hook.sh"
+        sh -x "$XCONFIG_RESOURCES/$CONFIG/hooks/post-install.sh"
     fi
 }
 
 uninstall_config()
 {
     CONFIG=$1
-    if [ ! -d "${XCONFIG_RESOURCES}/${CONFIG}" ]
+    if [ ! -d "$XCONFIG_RESOURCES/$CONFIG" ]
     then
-        echo "No such configuration ${CONFIG}"
+        echo "No such configuration $CONFIG"
+		echo "Remove the configuration files manually"
         return 1
     fi
-    for c in $(find "${XCONFIG_RESOURCES}/${CONFIG}" -maxdepth 1 -mindepth 1)
-    do
-        myc=$(basename $c)
-        if [ "${c%%.shared}" != "$c" ]
-        then
-            myc=${myc%%.shared}
-            rm -f "${HOME}/$myc"
-        elif [ "${c%%.private}" != "$c" ]
-        then
-            myc=${myc%%.private}
-            rm -rf "${HOME}/$myc" 2>&1 >/dev/null
-        else
-            continue
-        fi
-    done
+	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/{share,local}" -maxdepth 1 -mindepth 1 2>/dev/null)
+	do
+		c=$(basename $conf)
+        rm -rf "$HOME/$c"
+	done
 }
 
 if [ $# -eq 0 ]
@@ -115,21 +106,29 @@ case $1 in
         list_config
         ;;
     "install")
-        if [ $# -ne 2 ]
+        if [ $# -lt 2 ]
         then
             usage
             exit 1
         fi
-        install_config $2
+		shift
+		for c in $*
+		do
+			install_config "$c"
+		done
         RET=$?
         ;;
     "uninstall")
-        if [ $# -ne 2 ]
+        if [ $# -lt 2 ]
         then
             usage
             exit 1
         fi
-        uninstall_config $2
+		shift
+		for c in $*
+		do
+			uninstall_config "$c"
+		done
         RET=$?
         ;;
     *)
