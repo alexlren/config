@@ -148,11 +148,6 @@
             ;; Gdb
             (define-key c-mode-map (kbd "<f7>") 'gdb))
           )
-;; Indent case
-(add-hook 'c-mode-common-hook
-          (lambda ()
-			(c-set-offset 'case-label 4)))
-
 ;;-----------------------------------
 ;; CONFIGURATION
 ;;-----------------------------------
