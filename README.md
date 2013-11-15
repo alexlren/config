@@ -1,6 +1,6 @@
 # Xconfig
 
-It helps me maintaining multiple configurations on multiple machines.
+Just a simple tool to helps me maintaining multiple configurations on multiple machines.
 It is a very simple and basic install script.
 
 ## Usage
@@ -22,25 +22,26 @@ It is a very simple and basic install script.
    xconfig list
 </pre>
 ### Setup a new resource
+
+* Copy the shared resources
 <pre>
-   mkdir /opt/xconfig/resources/my_resource
-   cp ~/.myconfig* /opt/xconfig/resources/my_resource
+   mkdir -p /opt/xconfig/resources/my_resource/share
+   cp ~/.myconfig* /opt/xconfig/resources/my_resource/share
 </pre>
-Then add sufix to each configuration file that can be either:
-* .shared
 
-The file/directory is still maintained under git control after installing it
-* .private
-
-The file/directory is simply copied
+* Copy the non-shared resources i.e. specific to your environment
+<pre>
+   mkdir -p /opt/xconfig/resources/my_resource/local
+   cp ~/.myconfig* /opt/xconfig/resources/my_resource/local
+</pre>
 
 ### Pre/Post install scripts
 
 This will be executed before installing the resource config:
 <pre>
-   touch /opt/xconfig/resources/my_resource/pre-hook.sh
+   touch /opt/xconfig/resources/my_resource/hooks/pre-install.sh
 </pre>
 This will be executed after installing the resource config:
 <pre>
-   touch /opt/xconfig/resources/my_resource/post-hook.sh
+   touch /opt/xconfig/resources/my_resource/hooks/post-install.sh
 </pre>
