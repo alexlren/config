@@ -394,3 +394,5 @@
 (add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
 (add-to-list 'auto-mode-alist '("\\.zshrc$" . sh-mode))
 (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
+(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.ect$" . html-mode))
