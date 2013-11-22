@@ -372,6 +372,14 @@
     (load-theme x-theme t)
   (load-theme nox-theme t))
 
+;; Color diff
+(eval-after-load 'diff-mode
+  '(progn
+     (set-face-foreground 'diff-added "green4")
+     (set-face-foreground 'diff-removed "red3")
+	 (set-face-foreground 'diff-changed "purple")
+	 (set-face-attribute 'diff-header nil :foreground "blue" :background "black")))
+
 ;;-----------------------------------
 ;; FILE EXT
 ;;-----------------------------------
