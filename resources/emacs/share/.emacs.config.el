@@ -88,8 +88,8 @@
 (setq linum-format "%d ")
 ;; Tabs
 (setq-default tab-width 4)
-(setq-default indent-tabs-mode t)
-   ;;(setq standard-indent 2)
+(setq indent-tabs-mode t)
+(setq c-basic-offset 4)
 
 ;;-----------------------------------
 ;; KEY SHORTCUTS
@@ -154,7 +154,7 @@
 
 ;; C
 (setq c-default-style "linux")
-(setq c-basic-offset 4)
+
 ;;(setq c-syntactic-indentation nil)
 (add-hook 'find-file-hooks
           (lambda ()
@@ -343,6 +343,15 @@
   ido-enable-flex-matching t
   ido-case-fold  t)
 (setq confirm-nonexistent-file-or-buffer nil)
+
+;; Smart tabs
+(autoload 'smart-tabs-mode "smart-tabs-mode"
+  "Intelligently indent with tabs, align with spaces!")
+(autoload 'smart-tabs-mode-enable "smart-tabs-mode")
+(autoload 'smart-tabs-advice "smart-tabs-mode")
+(autoload 'smart-tabs-insinuate "smart-tabs-mode")
+(smart-tabs-insinuate 'c 'c++ 'java 'javascript 'cperl 'python 'ruby 'nxml)
+
 ;; Scala
 ;;(add-to-list 'load-path "~/.emacs.d/scala-mode2")
 ;;(require 'scala-mode2)
