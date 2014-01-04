@@ -37,9 +37,10 @@
 
 ;; Avoids any panel
 ;;(menu-bar-mode nil)
-(tool-bar-mode -1)
-(menu-bar-mode -1)
-(scroll-bar-mode -1)
+(menu-bar-mode nil)
+(when (display-graphic-p)
+  (tool-bar-mode nil)
+  (scroll-bar-mode nil))
 ;; Display column number
 (column-number-mode t)
 ;; Backspace acts like Delete
