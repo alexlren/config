@@ -35,5 +35,6 @@
     path = ~/.gitconfig.d/user.conf
 [core]
 	editor = emacsclient -a \"\" -t
+	deltaBaseCacheLimit = 1G
 [merge]
 	tool = meld
