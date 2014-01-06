@@ -46,10 +46,7 @@ install_config()
 	do
 		c=$(basename $conf)
 		# Override existing config anyway
-		if [ -e "$HOME/$c" ]
-		then
-			rm -rf "$HOME/$c"
-		fi
+		rm -rf "$HOME/$c"
 		ln -s "$XCONFIG_RESOURCES/$CONFIG/share/$c" "$HOME/$c"
 	done
 	# Install local config
