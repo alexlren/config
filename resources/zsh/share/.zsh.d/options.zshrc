@@ -16,7 +16,7 @@ unsetopt list_beep
 # Ctrl+D = logout
 unsetopt ignore_eof
 # Display exit status
-setopt print_exit_value
+unsetopt print_exit_value
 # Ask when removing all
 unsetopt rm_star_silent
 # Fix the command if unknown
