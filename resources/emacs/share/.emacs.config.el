@@ -132,8 +132,6 @@
 ;; Compile
 (global-set-key (kbd "<f5>") 'compile)
 (global-set-key (kbd "S-<f5>") 'recompile)
-;; Speedbar
-(global-set-key (kbd "<f8>") 'sr-speedbar-toggle)
 ;; Cscope
 (global-set-key (kbd "<f9>") 'cscope-set-initial-directory)
 (global-set-key (kbd "S-<f9>") 'cscope-create-list-of-files-to-index)
@@ -321,8 +319,6 @@
 (setq ac-ignore-case nil)
 ;; Cscope
 (require 'xcscope)
-;; Speedbar
-(require 'sr-speedbar)
 ;; IBuffer
 (require 'ibuffer)
 (global-set-key (kbd "C-x C-b") 'ibuffer)
