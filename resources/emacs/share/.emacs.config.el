@@ -136,6 +136,8 @@
 (global-set-key (kbd "S-<f10>") 'cscope-find-global-definition)
 (global-set-key (kbd "<f11>") 'cscope-prev-symbol)
 (global-set-key (kbd "<f12>") 'cscope-next-symbol)
+;; Imenu
+(global-set-key (kbd "M-,") 'idomenu)
 ;; Comments
 (global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
 ;; C keys
@@ -362,6 +364,9 @@
 ;;         (trait . (:foreground "#084EA8"))
 ;;         (object . (:foreground "#026DF7"))
 ;;         (package . font-lock-preprocessor-face)))
+;; Imenu completion
+(autoload 'idomenu "idomenu" nil t)
+
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
