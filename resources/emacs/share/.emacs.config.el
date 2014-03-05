@@ -367,6 +367,8 @@
 ;; Imenu completion
 (autoload 'idomenu "idomenu" nil t)
 
+;; Lua
+(autoload 'lua-mode "lua-mode" "Lua editing mode." t)
 
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
@@ -404,3 +406,5 @@
 (add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
 (add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
 (add-to-list 'auto-mode-alist '("\\.ect$" . html-mode))
+(add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
+(add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
