@@ -30,14 +30,13 @@
     (save-buffer)
     (call-process "chmod" nil t nil "+x" (buffer-file-name))))
 
-
 ;;-----------------------------------
 ;; PARAMETERS
 ;;-----------------------------------
 
 ;; Avoids any panel
 ;;(menu-bar-mode nil)
-(menu-bar-mode nil)
+(menu-bar-mode -1)
 (when (display-graphic-p)
   (tool-bar-mode nil)
   (scroll-bar-mode nil))
