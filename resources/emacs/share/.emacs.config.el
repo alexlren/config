@@ -84,8 +84,6 @@
 (setq compilation-scroll-output t)
 ;; Enable upcase
 (put 'upcase-region 'disabled nil)
-;; Linum space separator
-(setq linum-format "%d ")
 ;; Tabs
 (setq-default tab-width 4)
 (setq indent-tabs-mode t)
@@ -306,8 +304,8 @@
 ;;-----------------------------------
 
 (add-to-list 'load-path "~/.emacs.d/")
-;; Lines
-(global-linum-mode)
+(require 'nlinum)
+(global-nlinum-mode)
 ;; Autocomplete
 (add-to-list 'load-path "~/.emacs.d/auto-complete")
 (require 'auto-complete-config)
