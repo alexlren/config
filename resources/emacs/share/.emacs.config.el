@@ -373,7 +373,7 @@
 ;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
 (setq nox-theme 'monokai-nox)
-(setq x-theme 'default-x)
+(setq x-theme 'monokai-x)
 
 (if (window-system)
     (load-theme x-theme t)
