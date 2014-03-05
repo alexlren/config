@@ -309,9 +309,6 @@
 ;;-----------------------------------
 
 (add-to-list 'load-path "~/.emacs.d/")
-
-;; Php
-(autoload 'php-mode "php-mode" "PHP mode" t)
 ;; Lines
 (global-linum-mode)
 ;; Autocomplete
