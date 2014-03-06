@@ -50,3 +50,5 @@ alias tmk='tmux kill-session -t'
 alias tma='tmux -u attach -t'
 alias lt='tree'
 alias lta='tree -a'
+alias urxvt='urxvt256c'
+
