@@ -371,10 +371,10 @@
 ;; Color diff
 (eval-after-load 'diff-mode
   '(progn
-     (set-face-foreground 'diff-added "green4")
-     (set-face-foreground 'diff-removed "red3")
-	 (set-face-foreground 'diff-changed "purple")
-	 (set-face-attribute 'diff-header nil :foreground "blue" :background "black")))
+     (set-face-attribute 'diff-added nil :foreground "green4" :background "light")
+     (set-face-attribute 'diff-removed nil :foreground "red2" :background "light")
+	 (set-face-attribute 'diff-changed nil :foreground "purple" :background "light")
+	 (set-face-attribute 'diff-header nil :foreground "blue" :background "light")))
 
 ;;-----------------------------------
 ;; FILE EXT
