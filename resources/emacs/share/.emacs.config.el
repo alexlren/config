@@ -263,6 +263,14 @@
   (global-set-key "\C-w" 'kill-region-or-pword)
 )
 
+(defun check-large-file-hook ()
+  "If a file is over a given size, turn off syntax highlighting"
+  (when (> (buffer-size) (* 10240 1024))
+    (buffer-disable-undo)
+    (fundamental-mode)))
+
+(add-hook 'find-file-hooks 'check-large-file-hook)
+
 ;;-----------------------------------
 ;; HIGHLIGHT KEYWORDS
 ;;-----------------------------------
