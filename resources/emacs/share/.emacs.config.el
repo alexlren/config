@@ -353,25 +353,6 @@
 (autoload 'smart-tabs-insinuate "smart-tabs-mode")
 (smart-tabs-insinuate 'c 'c++ 'java 'javascript 'cperl 'python 'ruby 'nxml)
 
-;; Scala
-;;(add-to-list 'load-path "~/.emacs.d/scala-mode2")
-;;(require 'scala-mode2)
-;; Ensime
-;; (add-to-list 'load-path "~/.emacs.d/ensime/elisp/")
-;; (require 'ensime)
-;; (add-hook 'scala-mode-hook 'ensime-scala-mode-hook)
-;; (setq ensime-sem-high-faces
-;;       '(
-;;         (var . (:foreground "#ff2222"))
-;;         (val . (:foreground "#111111"))
-;;         (varField . (:foreground "#ff6666"))
-;;         (valField . (:foreground "#666666"))
-;;         (functionCall . (:foreground "#84BEE3"))
-;;         (param . (:foreground "#111111"))
-;;         (class . font-lock-type-face)
-;;         (trait . (:foreground "#084EA8"))
-;;         (object . (:foreground "#026DF7"))
-;;         (package . font-lock-preprocessor-face)))
 ;; Imenu completion
 (autoload 'idomenu "idomenu" nil t)
 
