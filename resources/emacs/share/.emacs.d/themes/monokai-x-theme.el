@@ -1,8 +1,28 @@
-(deftheme default-x
+(deftheme monokai-x
   "Created 2013-04-05.")
 
+(custom-theme-set-variables
+ 'monokai-x
+ '(after-save-hook (quote (executable-make-buffer-file-executable-if-script-p)))
+ '(ido-auto-merge-work-directories-length -1)
+ '(ido-confirm-unique-completion t)
+ '(ido-create-new-buffer (quote always))
+ '(ido-ignore-buffers (quote ("\\`\\*breakpoints of.*\\*\\'" "\\`\\*stack frames of.*\\*\\'" "\\`\\*gud\\*\\'" "\\`\\*locals of.*\\*\\'" "\\` ")))
+ '(inhibit-startup-screen t)
+ '(require-final-newline t)
+ '(show-paren-style (quote parenthesis))
+ '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
+ '(show-paren-mode t)
+ '(ido-everywhere t)
+ '(global-whitespace-mode t)
+ '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
+ '(whitespace-indentation-regexp (quote ("^	*\\(\\( \\{1\\}\\)+\\)[^
+	]" . "^ *\\(	+\\)[^
+]")))
+ '(whitespace-line-column 81))
+
 (custom-theme-set-faces
- 'default-x
+ 'monokai-x
  '(default ((t (:family "Monospace" :foundry "unknown" :width normal :height 100 :weight normal :slant normal :underline nil :overline nil :strike-through nil :box nil :inverse-video nil :foreground "white" :background "#272822" :stipple nil :inherit nil))))
  '(cursor ((((background light)) (:background "black")) (((background dark)) (:background "white"))))
  '(fixed-pitch ((t (:family "Monospace"))))
@@ -14,6 +34,15 @@
  '(shadow ((((class color grayscale) (min-colors 88) (background light)) (:foreground "grey50")) (((class color grayscale) (min-colors 88) (background dark)) (:foreground "grey70")) (((class color) (min-colors 8) (background light)) (:foreground "green")) (((class color) (min-colors 8) (background dark)) (:foreground "yellow"))))
  '(secondary-selection ((((class color) (min-colors 88) (background light)) (:background "yellow1")) (((class color) (min-colors 88) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 16) (background light)) (:background "yellow")) (((class color) (min-colors 16) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 8)) (:foreground "black" :background "cyan")) (t (:inverse-video t))))
  '(trailing-whitespace ((t (:background "#ff4242"))))
+ '(whitespace-empty ((t nil)))
+ '(whitespace-hspace ((t (:background "gray24"))))
+ '(whitespace-indentation ((t (:background "gray24"))))
+ '(whitespace-line ((t (:background "brightmagenta" :underline t))))
+ '(whitespace-space ((t (:background nil))))
+ '(whitespace-space-after-tab ((t (:background "gray24"))))
+ '(whitespace-space-before-tab ((t (:background "red"))))
+ '(whitespace-tab ((t (:background nil))))
+ '(whitespace-trailing ((t (:background "red"))))
  '(font-lock-builtin-face ((t (:foreground "#23d7d7"))))
  '(font-lock-comment-delimiter-face ((t (:inherit (font-lock-comment-face)))))
  '(font-lock-comment-face ((t (:foreground "#75715E"))))
@@ -47,4 +76,4 @@
  '(next-error ((t (:inherit (region)))))
  '(query-replace ((t (:inherit (isearch))))))
 
-(provide-theme 'default-x)
+(provide-theme 'monokai-x)

@@ -13,7 +13,13 @@
  '(show-paren-style (quote parenthesis))
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
  '(show-paren-mode t)
- '(ido-everywhere t))
+ '(ido-everywhere t)
+ '(global-whitespace-mode t)
+ '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
+ '(whitespace-indentation-regexp (quote ("^	*\\(\\( \\{1\\}\\)+\\)[^
+	]" . "^ *\\(	+\\)[^
+]")))
+ '(whitespace-line-column 81))
 
 (custom-theme-set-faces
  'monokai-nox
@@ -28,6 +34,15 @@
  '(shadow ((((class color grayscale) (min-colors 88) (background light)) (:foreground "grey50")) (((class color grayscale) (min-colors 88) (background dark)) (:foreground "grey70")) (((class color) (min-colors 8) (background light)) (:foreground "green")) (((class color) (min-colors 8) (background dark)) (:foreground "yellow"))))
  '(secondary-selection ((((class color) (min-colors 88) (background light)) (:background "yellow1")) (((class color) (min-colors 88) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 16) (background light)) (:background "yellow")) (((class color) (min-colors 16) (background dark)) (:background "SkyBlue4")) (((class color) (min-colors 8)) (:foreground "black" :background "cyan")) (t (:inverse-video t))))
  '(trailing-whitespace ((t (:background "#ff4242"))))
+ '(whitespace-empty ((t nil)))
+ '(whitespace-hspace ((t (:background "color-238"))))
+ '(whitespace-indentation ((t (:background "color-236"))))
+ '(whitespace-line ((t (:background "brightmagenta" :underline t))))
+ '(whitespace-space ((t (:background nil))))
+ '(whitespace-space-after-tab ((t (:background "color-236"))))
+ '(whitespace-space-before-tab ((t (:background "red"))))
+ '(whitespace-tab ((t (:background nil))))
+ '(whitespace-trailing ((t (:background "red"))))
  '(font-lock-builtin-face ((t (:foreground "#23d7d7"))))
  '(font-lock-comment-delimiter-face ((t (:inherit (font-lock-comment-face)))))
  '(font-lock-comment-face ((t (:foreground "gray55"))))
