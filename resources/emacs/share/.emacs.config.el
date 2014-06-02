@@ -69,7 +69,7 @@
 ;; No backupfile
 (setq make-backup-files nil)
 ;; Delete trailing whitespaces
-(add-hook 'write-file-hooks 'delete-trailing-whitespace)
+;;(add-hook 'write-file-hooks 'delete-trailing-whitespace)
 ;; Parenthesis mode
 (show-paren-mode t)
 (setq show-paren-face 'modeline)
