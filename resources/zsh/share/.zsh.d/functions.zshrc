@@ -39,8 +39,8 @@ function each()
 	if [ $# -lt 2 ]; then
 		return 1
 	fi
-	local pattern=$1
-	local cmd=$2
+	local pattern="$1"
+	local cmd="$2"
 	cmd=${cmd/@f/\$f}
 	for f in $(find . -name "$pattern"); do
 		eval $cmd
@@ -66,7 +66,7 @@ function _wgrep()
 
 function hl()
 {
-	_wgrep -EiI "$1|\$" $2
+	_wgrep -EiI "$1|\$" $@
 }
 
 function gr()
@@ -82,7 +82,11 @@ function gri()
 function bak()
 {
 	if [ $# -eq 1 ] && [ -f "$1" ]; then
-		mv -v $1{,.bak}
+		local name="${1}.bak"
+		while [ -f "$name" ]; do
+			name="${name}.bak"
+		done
+		mv -v "$1" "$name"
 	fi
 }
 
@@ -92,7 +96,7 @@ function rst()
 		local ext=$(echo $1 | rev | cut -d'.' -f1 | rev)
 		local file=$1
 		if [ "$ext" = "bak" ]; then
-			mv ${file%%.bak}{.bak,}
+			mv -v ${file%%.bak}{.bak,}
 		fi
 	fi
 }
