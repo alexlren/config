@@ -23,7 +23,7 @@ fi
 
 alias grep='grep --color'
 alias ls='ls --classify --tabsize=0 --literal --color=auto --show-control-chars --human-readable'
-alias cp='cp -i -v'
+alias cp='cp -v'
 alias mv='mv -i -v'
 alias rm='rm -i -v'
 alias ll='ls -l'
