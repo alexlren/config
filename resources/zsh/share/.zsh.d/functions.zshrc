@@ -142,6 +142,15 @@ function extract()
 	esac
 }
 
+function tarball()
+{
+	if [ $# -lt 1 ] || [ ! -e "$1" ]; then
+		return 1
+	fi
+	local tarname="${1}.tar.bz2"
+	tar cjf $tarname $*
+}
+
 function reload()
 {
 	for fn in $*; do
