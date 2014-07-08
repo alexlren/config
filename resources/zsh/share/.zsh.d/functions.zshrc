@@ -127,6 +127,9 @@ function extract()
 		*.tar.bz2)
 			tar xjvf $1
 			;;
+		*.tar.xz)
+			tar xJvf $1
+			;;
 		*.tar.gz|*.tgz)
 			tar xzvf $1
 			;;
