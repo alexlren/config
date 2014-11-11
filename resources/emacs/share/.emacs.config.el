@@ -1,5 +1,5 @@
 ;;#############################
-;; Made by shaoner <shaoner@gmail.com>
+;; EMACS CONFIG
 ;;#############################
 
 ;;-----------------------------------
@@ -306,7 +306,7 @@
                          (point)))))))
 
   (global-set-key "\C-w" 'kill-region-or-pword)
-)
+  )
 
 (defun check-large-file-hook ()
   "If a file is over a given size, turn off syntax highlighting"
@@ -353,7 +353,6 @@
 
 
 
-
 ;;-----------------------------------
 ;; ADDONS
 ;;-----------------------------------
@@ -380,14 +379,14 @@
 (require 'ido)
 (ido-mode 1)
 (setq
-  ido-everywhere t
-  ido-ignore-buffers
-  '("\\` " "^\*Messages\*" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
-    "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
-  ido-ignore-directories '("^\\.svn" "^\\.git")
-  ido-auto-merge-work-directories-length -1
-  ido-enable-flex-matching t
-  ido-case-fold  t)
+ ido-everywhere t
+ ido-ignore-buffers
+ '("\\` " "^\*Messages\*" "^\*Back" ".*Completion" "^\*Ido" "^\*trace"
+   "^\*compilation" "^\*GTAGS" "^session\.*" "^\*")
+ ido-ignore-directories '("^\\.svn" "^\\.git")
+ ido-auto-merge-work-directories-length -1
+ ido-enable-flex-matching t
+ ido-case-fold  t)
 (setq confirm-nonexistent-file-or-buffer nil)
 
 ;; Smart tabs
@@ -418,8 +417,8 @@
   '(progn
      (set-face-attribute 'diff-added nil :foreground "green4" :background "light")
      (set-face-attribute 'diff-removed nil :foreground "red2" :background "light")
-	 (set-face-attribute 'diff-changed nil :foreground "purple" :background "light")
-	 (set-face-attribute 'diff-header nil :foreground "blue" :background "light")))
+     (set-face-attribute 'diff-changed nil :foreground "purple" :background "light")
+     (set-face-attribute 'diff-header nil :foreground "blue" :background "light")))
 
 ;;-----------------------------------
 ;; FILE EXT
