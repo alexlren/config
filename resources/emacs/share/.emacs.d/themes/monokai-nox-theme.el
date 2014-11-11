@@ -15,11 +15,12 @@
  '(show-paren-mode t)
  '(ido-everywhere t)
  '(global-whitespace-mode t)
- '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
+ '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
+;; '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
  '(whitespace-indentation-regexp (quote ("^	*\\(\\( \\{1\\}\\)+\\)[^
 	]" . "^ *\\(	+\\)[^
 ]")))
- '(whitespace-line-column 81))
+ '(whitespace-line-column 80))
 
 (custom-theme-set-faces
  'monokai-nox
@@ -37,7 +38,7 @@
  '(whitespace-empty ((t nil)))
  '(whitespace-hspace ((t (:background "color-238"))))
  '(whitespace-indentation ((t (:background "color-236"))))
- '(whitespace-line ((t (:foreground "white" :background "color-202" :weight bold :underline t))))
+ '(whitespace-line ((t (:weight bold))))
  '(whitespace-space ((t (:background nil))))
  '(whitespace-space-after-tab ((t (:background "color-236"))))
  '(whitespace-space-before-tab ((t (:background "brightred"))))

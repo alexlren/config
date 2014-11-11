@@ -442,3 +442,10 @@
 (add-to-list 'auto-mode-alist '("\\.ect$" . html-mode))
 (add-to-list 'auto-mode-alist '("\\.lua$" . lua-mode))
 (add-to-list 'interpreter-mode-alist '("lua" . lua-mode))
+
+(add-hook 'prog-mode-hook
+          (lambda ()
+            (font-lock-add-keywords
+             nil
+             '(("^[^\n]\\{80\\}\\(.*\\)$"
+                1 font-lock-warning-face prepend)))))
