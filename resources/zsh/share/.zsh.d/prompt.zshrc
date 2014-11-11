@@ -7,20 +7,24 @@
 # PROMPT
 # ---------------------------------------
 
-# Colors
-red="%{[33;01;31m%}"
-green="%{[33;01;32m%}"
-blue="%{[33;01;36m%}"
-yellow="%{[33;01;33m%}"
-purple="%{[33;01;34m%}"
-lred="%{[33;00;31m%}"
-lgreen="%{[33;00;32m%}"
-lblue="%{[33;00;36m%}"
-lyellow="%{[33;00;33m%}"
-lpurple="%{[33;00;34m%}"
-white="%{[0m%}"
+__setup_prompt()
+{
+    local red="%{[33;01;31m%}"
+    local green="%{[33;01;32m%}"
+    local blue="%{[33;01;36m%}"
+    local yellow="%{[33;01;33m%}"
+    local purple="%{[33;01;34m%}"
+    local lred="%{[33;00;31m%}"
+    local lgreen="%{[33;00;32m%}"
+    local lblue="%{[33;00;36m%}"
+    local lyellow="%{[33;00;33m%}"
+    local lpurple="%{[33;00;34m%}"
+    local none="%{[0m%}"
 
-# Display prompt
-export PS1="%B[%b%(!.$lred.$lpurple)%n$white@%(!.$lred.$lpurple)%m$white:%(0?,$white,$lred)%?$white%B]%b "
-export RPS1="%B[%b${lgreen}%~${white}%B]%b %B[%b%*%B]%b"
-export PS2="$lblue>$white "
+    # Display prompt
+    export PS1="%B[%b%(!.$lred.$lpurple)%n$none@%(!.$lred.$lpurple)%m$none:%(0?,$none,$lred)%?$none%B]%b "
+    export RPS1="%B[%b${lgreen}%~$none%B]%b %B[%b%*%B]%b"
+    export PS2="$lblue>$none "
+}
+
+__setup_prompt
