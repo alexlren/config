@@ -131,9 +131,9 @@
 (global-set-key (kbd "S-<f5>") 'recompile)
 ;; Cscope
 (global-set-key (kbd "<f9>") 'cscope-set-initial-directory)
-(global-set-key (kbd "S-<f9>") 'cscope-create-list-of-files-to-index)
+(global-set-key (kbd "C-x <f9>") 'cscope-create-list-of-files-to-index)
 (global-set-key (kbd "<f10>") 'cscope-find-this-symbol)
-(global-set-key (kbd "S-<f10>") 'cscope-find-global-definition)
+(global-set-key (kbd "C-x <f10>") 'cscope-find-global-definition)
 (global-set-key (kbd "<f11>") 'cscope-prev-symbol)
 (global-set-key (kbd "<f12>") 'cscope-next-symbol)
 ;; Imenu
