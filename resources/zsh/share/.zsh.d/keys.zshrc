@@ -1,6 +1,15 @@
 # ----------------------------------------
 # KEYS
-# ----------------------------------------
+# -------
+
+prepend-sudo()
+{
+    if [[ "$BUFFER" != su(do|)\ * ]]; then
+        BUFFER="sudo $BUFFER"
+        (( CURSOR += 5 ))
+    fi
+}
+zle -N prepend-sudo
 
 # Home
 bindkey ''    beginning-of-line
@@ -24,6 +33,8 @@ bindkey '[6~' history-search-forward
 bindkey '[1;5D' backward-word
 # ctrl + ->
 bindkey '[1;5C' forward-word
+# ctrl X
+bindkey '' prepend-sudo
 
 typeset -A key
 
