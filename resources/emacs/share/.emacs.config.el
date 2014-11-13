@@ -218,7 +218,8 @@
 (add-hook 'perl-mode-hook
           (lambda ()
             (when (equal (point-min) (point-max))
-              (insert-shebang "/usr/bin/perl -w")
+              (insert "use strict;\nuse warnings;\n\n")
+              (insert-shebang "/usr/bin/env perl")
               (goto-char (point-max)))))
 
 ;; Awk
