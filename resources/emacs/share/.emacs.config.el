@@ -168,9 +168,10 @@
 (global-set-key (kbd "<f1>") 'delete-other-windows)
 (global-set-key (kbd "<f2>") 'split-window-horizontally)
 (global-set-key (kbd "<f3>") 'split-window-vertically)
-(global-set-key (kbd "<f4>") 'toggle-indent-mode)
 (global-set-key (kbd "C-x |") 'split-window-horizontally)
 (global-set-key (kbd "C-x \-") 'split-window-vertically)
+;; Style
+(global-set-key (kbd "<f4>") 'toggle-indent-mode)
 ;; Compile
 (global-set-key (kbd "<f5>") 'compile)
 (global-set-key (kbd "S-<f5>") 'recompile)
