@@ -174,7 +174,7 @@
 (global-set-key (kbd "<f4>") 'toggle-indent-mode)
 ;; Compile
 (global-set-key (kbd "<f5>") 'compile)
-(global-set-key (kbd "S-<f5>") 'recompile)
+(global-set-key (kbd "C-x <f5>") 'recompile)
 ;; Cscope
 (global-set-key (kbd "<f9>") 'cscope-set-initial-directory)
 (global-set-key (kbd "C-x <f9>") 'cscope-create-list-of-files-to-index)
