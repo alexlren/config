@@ -15,7 +15,7 @@
 	# Checkout
   	co = checkout
 	# Status
-	st = status
+	st = status -s
 	# Branch
 	br = branch --verbose --abbrev
 	bra = branch -a --verbose --abbrev
