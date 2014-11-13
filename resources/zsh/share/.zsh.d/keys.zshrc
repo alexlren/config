@@ -18,9 +18,9 @@ bindkey ''    end-of-line
 # Del
 bindkey ''    delete-char
 # Home
-bindkey '^[[1~' beginning-of-line
+bindkey '[7~' beginning-of-line
 # End
-bindkey '^[[4~' end-of-line
+bindkey '[8~' end-of-line
 # Del
 bindkey '[3~' delete-char
 # Insert
