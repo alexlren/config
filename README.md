@@ -21,6 +21,10 @@ It is a very simple and basic install script.
 <pre>
    xconfig list
 </pre>
+### Update xconfig
+<pre>
+   xconfig
+</pre>
 ### Setup a new resource
 
 * Copy the shared resources
@@ -35,7 +39,7 @@ It is a very simple and basic install script.
    cp ~/.myconfig* /opt/xconfig/resources/my_resource/local
 </pre>
 
-### Pre/Post install scripts
+### Pre/Post (un)install scripts
 
 This will be executed before installing the resource config:
 <pre>

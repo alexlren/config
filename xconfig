@@ -3,135 +3,291 @@
 XCONFIG_ROOT=$(readlink -f $0)
 XCONFIG_ROOT=$(dirname "$XCONFIG_ROOT")
 XCONFIG_RESOURCES="$XCONFIG_ROOT/resources"
+XCONFIG_UPTSFILE="$XCONFIG_ROOT/.update.ts"
+XCONFIG_UPTSMAX=$((24 * 60 * 60))
 
-usage()
+# Commands
+# ------------------------------
+
+command_help()
 {
-    echo "Usage: xconfig COMMAND"
-    echo "Install a configuration directory in your HOME."
-    echo
-    echo -e "  help"
-    echo -e "\tDisplay this help"
-    echo -e "  list"
-    echo -e "\tList configurations"
-    echo -e "  install CONFIG"
-    echo -e "\tCopy the required configuration CONFIG in your HOME"
-    echo -e "  uninstall CONFIG"
-    echo -e "\tRemove the required configuration CONFIG from your HOME"
+    if [ $# -eq 0 ]; then
+        local helpfuncs=$(typeset -F | grep '^declare -f help_' | sed -r 's/declare \-f help_(.+)/\1/')
+        echo "Usage: $THIS <command> [ <args> ]"
+        echo
+        for cmdname in $helpfuncs; do
+            eval "help_$cmdname"
+        done
+    elif __is_function "help_$1"; then
+        echo -n "Usage: "
+        eval "help_$1"
+    else
+        __fatal "Unknown command: $1"
+    fi
 }
 
-list_config()
+command_list()
 {
-    echo "Configuration:"
-    for r in ${XCONFIG_RESOURCES}/*
-    do
-        echo "* $(basename $r)"
+    for r in "$XCONFIG_RESOURCES/"*; do
+        __pr_info "$(basename $r)"
     done
 }
 
-install_config()
+command_install()
 {
-    CONFIG=$1
-    if [ ! -d "$XCONFIG_RESOURCES/$CONFIG" ]
-    then
-        echo "No such configuration $CONFIG"
-        return 1
-    fi
-	# Pre install hook
-    if [ -f "$XCONFIG_RESOURCES/$CONFIG/hooks/pre-install.sh" ]
-    then
-        sh -x "$XCONFIG_RESOURCES/$CONFIG/hooks/pre-install.sh"
-    fi
-	# Install shared config
-	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/share" -maxdepth 1 -mindepth 1 2>/dev/null)
-	do
-		c=$(basename $conf)
-		# Override existing config anyway
-		rm -rf "$HOME/$c"
-		ln -s "$XCONFIG_RESOURCES/$CONFIG/share/$c" "$HOME/$c"
-	done
-	# Install local config
-	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/local" -maxdepth 1 -mindepth 1 2>/dev/null)
-	do
-		c=$(basename $conf)
-		# Remove old config?
-        if [ -e "$HOME/$c" ]
-        then
-            echo -n "Override $HOME/$c ? [y/N] "
-            read ANSWER
-            if [ "$ANSWER" != "y" ]
-            then
-                continue
+    local r
+    if [ $# -eq 0 ]; then
+        local numr=""
+        local i=1
+        for tr in "$XCONFIG_RESOURCES/"*; do
+            numr="$numr$i:$(basename $tr);"
+            i=$(($i + 1))
+        done
+        numr="$numr$i:all;$(($i + 1)):exit"
+        i=$(($i + 1))
+        IFS=";"
+        local tr tn choice
+        for tnr in $numr; do
+            tn=$(echo $tnr | cut -d: -f1)
+            tr=$(echo $tnr | cut -d: -f2)
+            echo "[$tn] $tr"
+        done
+        local all=0
+        while true; do
+            choice=$(__input "Which resource? [$i]")
+            if [[ "$choice" =~ ^[0-9]$ ]] && [ "$choice" -ge 1 ] && [ "$choice" -le $i ]; then
+                if  [ "$choice" -eq $i ]; then
+                    return 0
+                fi
+                break
+            elif [ -z "$choice" ]; then
+                return 0
+            else
+                echo "Invalid choice"
             fi
+        done
+        if [ "$choice" -eq $(($i - 1)) ]; then
+            # Install all
+            for r in "$XCONFIG_RESOURCES/"*; do
+                __install_resource "$(basename $r)"
+            done
+        else
+            # Install the selected one
+            r=$(echo "$numr" | cut -d';' -f$choice | cut -d':' -f2)
+            __install_resource $r
         fi
-		rm -f "$HOME/$c"
-		cp -r "$XCONFIG_RESOURCES/$CONFIG/local/$c" "$HOME/$c"
-	done
-    if [ -f "$XCONFIG_RESOURCES/$CONFIG/hooks/post-install.sh" ]
-    then
-        sh -x "$XCONFIG_RESOURCES/$CONFIG/hooks/post-install.sh"
+    else
+        # Check that all services actually exist
+        for r in $@; do
+            [ -d "$XCONFIG_RESOURCES/$r" ] || __fatal "No such resource $r"
+        done
+        # Install each
+        for r in $@; do
+            __install_resource $r
+        done
     fi
 }
 
-uninstall_config()
+command_update()
 {
-    CONFIG=$1
-    if [ ! -d "$XCONFIG_RESOURCES/$CONFIG" ]
-    then
-        echo "No such configuration $CONFIG"
-		echo "Remove the configuration files manually"
-        return 1
+    local now curts
+    if [ ! "$1" = "-f" ] && [ -f "$XCONFIG_UPTSFILE" ]; then
+        now=$(date +'%s')
+        curts=$(stat -c '%Y' "$XCONFIG_UPTSFILE")
+        if [ $(($now - $curts)) -lt $XCONFIG_UPTSMAX ]; then
+            return 0
+        fi
     fi
-	for conf in $(find "$XCONFIG_RESOURCES/$CONFIG/share" "$XCONFIG_RESOURCES/$CONFIG/local" -maxdepth 1 -mindepth 1 2>/dev/null)
-	do
-		c=$(basename $conf)
-        rm -rf "$HOME/$c"
-	done
+    touch "$XCONFIG_UPTSFILE"
+    __pr_info "Update xconfig"
+    git --git-dir="$XCONFIG_ROOT/.git" pull origin master
+    if [ $? -eq 0 ]; then
+        for r in "$XCONFIG_RESOURCES/"*; do
+            __install_resource $r
+        done
+    fi
 }
 
+command_uninstall()
+{
+    for r in $@; do
+        [ -d "$XCONFIG_RESOURCES/$r" ] || __fatal "No such resource $r"
+    done
+    # Install each
+    for r in $@; do
+        __uninstall_resource $r
+    done
+}
+
+# Help
+# ------------------------------
+
+help_help()
+{
+    __pr_help help Print this help
+}
+
+help_list()
+{
+    __pr_help list List available resources
+}
+
+help_install()
+{
+    __pr_help "install [ resource ... ]" Install each resource in your home directory
+}
+
+help_update()
+{
+    __pr_help "update [ -f ]" Update xconfig, use -f to force update
+}
+
+help_uninstall()
+{
+    __pr_help "uninstall resource [ resource ... ]" Uninstall each resource
+}
+
+# Utils
+# ------------------------------
+
+FONT_RED="\e[31m"
+FONT_GREEN="\e[32m"
+FONT_BLUE="\e[34m"
+FONT_BOLD="\e[;01m"
+FONT_NONE="\e[0m"
+
+__install_resource()
+{
+    local r=$1
+    local RESOURCE=$r
+    local confdir="$XCONFIG_RESOURCES/$r"
+    # Pre install hook
+    [ -f "$confdir/hooks/pre-install.sh" ] && source "$confdir/hooks/pre-install.sh"
+    # Install shared config
+    local conf conffile ans
+    if [ -d "$confdir/share" ]; then
+        for conf in $(find "$confdir/share" -maxdepth 1 -mindepth 1); do
+            conffile=$(basename $conf)
+            # Override existing config anyway
+            rm -f "$HOME/$conffile"
+            ln -s "$confdir/share/$conffile" "$HOME/$conffile"
+        done
+    fi
+    # Install local config
+    if [ -d "$confdir/local" ]; then
+        for conf in $(find "$confdir/local" -maxdepth 1 -mindepth 1); do
+            conffile=$(basename $conf)
+            # Remove old config?
+            if [ -e "$HOME/$conffile" ]; then
+                ans=$(__input "Override $HOME/$conffile ? [y/N]")
+                if [ ! "$ans" = "y" ]; then
+                    continue
+                fi
+            fi
+            rm -rf "$HOME/$conffile"
+            cp -r "$confdir/local/$conffile" "$HOME/$conffile"
+        done
+    fi
+    # Post install hook
+    [ -f "$confdir/hooks/post-install.sh" ] && source "$confdir/hooks/post-install.sh"
+}
+
+__uninstall_resource()
+{
+    local r=$1
+    local RESOURCE=$r
+    local confdir="$XCONFIG_RESOURCES/$r"
+    # Pre uninstall hook
+    [ -f "$confdir/hooks/pre-uninstall.sh" ] && source "$confdir/hooks/pre-uninstall.sh"
+    local conf conffile ans
+    for conf in $(find "$confdir/share" -maxdepth 1 -mindepth)
+    do
+        conffile=$(basename $conf)
+        rm -f "$HOME/$conffile"
+    done
+    for conf in $(find "$confdir/local" -maxdepth 1 -mindepth)
+    do
+        conffile=$(basename $conf)
+        ans=$(__input "Are you sure you want to remove $conffile? [y/N]")
+        if [ ! "$ans" = "y" ]; then
+            continue
+        fi
+        rm -rf "$HOME/$conffile"
+    done
+    # Post uninstall hook
+    [ -f "$confdir/hooks/post-uninstall.sh" ] && source "$confdir/hooks/post-uninstall.sh"
+}
+
+__is_function()
+{
+    typeset -F | grep -q "^declare -f $1\$"
+    return $?
+}
+
+__print()
+{
+    local opts=$1
+    shift
+    local font=$1
+    shift
+    if [ ! -z "$RESOURCE" ]; then
+        prefix="($RESOURCE) "
+    fi
+    echo $opts "[$font*$FONT_NONE] $prefix$*"
+}
+
+__pr_help()
+{
+    local cmd=$1
+    shift
+    local desc=$*
+    echo -e "$FONT_BOLD$cmd$FONT_NONE"
+    echo -e "\t$desc"
+}
+
+__pr_info()
+{
+    __print -e $FONT_BLUE $*
+}
+
+# __chkarg()
+# {
+#     [ $1 -ge $2 ] || __fatal "Expected $1 argument(s) but got $2"
+# }
+
+__pr_err()
+{
+    __print -e $FONT_RED $*
+}
+
+__fatal()
+{
+    __pr_err $*
+    exit 1
+}
+
+__input()
+{
+    local ans
+    __print -en $FONT_GREEN "$* " 1>&2
+    read ans
+    echo $ans
+}
+
+# Entry point
+# ------------------------------
 if [ $# -eq 0 ]
 then
-    usage
+    command_help
     exit 1
 fi
 
-RET=0
-case $1 in
-    "help")
-        usage
-        ;;
-    "list")
-        list_config
-        ;;
-    "install")
-        if [ $# -lt 2 ]
-        then
-            usage
-            exit 1
-        fi
-		shift
-		for c in $*
-		do
-			install_config "$c"
-		done
-        RET=$?
-        ;;
-    "uninstall")
-        if [ $# -lt 2 ]
-        then
-            usage
-            exit 1
-        fi
-		shift
-		for c in $*
-		do
-			uninstall_config "$c"
-		done
-        RET=$?
-        ;;
-    *)
-        echo "Command not found: $1" 1>&2
-        usage
-        exit 1
-        ;;
-esac
-exit $RET
+COMMAND="command_$1"
+shift
+
+if __is_function "$COMMAND"; then
+    eval "$COMMAND" $*
+    exit $?
+else
+    __fatal "Unknown command $1"
+fi
