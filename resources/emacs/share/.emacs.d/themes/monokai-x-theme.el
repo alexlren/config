@@ -14,7 +14,6 @@
  '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
  '(show-paren-mode t)
  '(ido-everywhere t)
- '(global-whitespace-mode t)
  '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
  '(whitespace-indentation-regexp (quote ("^	*\\(\\( \\{1\\}\\)+\\)[^
 	]" . "^ *\\(	+\\)[^

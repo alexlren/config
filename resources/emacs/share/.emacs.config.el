@@ -132,6 +132,8 @@
 (put 'upcase-region 'disabled nil)
 ;; Indentation
 (space-indent-mode t)
+;; Whitespace only for programming
+(add-hook 'prog-mode-hook 'whitespace-mode)
 
 ;;-----------------------------------
 ;; KEY SHORTCUTS
@@ -172,6 +174,7 @@
 (global-set-key (kbd "C-x \-") 'split-window-vertically)
 ;; Style
 (global-set-key (kbd "<f4>") 'toggle-indent-mode)
+(global-set-key (kbd "C-x <f4>") 'whitespace-mode)
 ;; Compile
 (global-set-key (kbd "<f5>") 'compile)
 (global-set-key (kbd "C-x <f5>") 'recompile)
