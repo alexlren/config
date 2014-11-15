@@ -137,9 +137,9 @@ reln()
 
 __extract_mkdir()
 {
-    local ext=$(echo $1 | rev | cut -d. -f2- | rev)
-    local dir=$(basename $1 $ext)
-    [ -d "$dir" ] || mkdir "$dir"
+    local ext=$(echo $1 | rev | cut -d. -f1 | rev)
+    local dir=$(basename $1 .$ext)
+    mkdir -p "$dir"
     echo "$dir"
 }
 
@@ -156,7 +156,7 @@ extract()
     if ! __file_exists "$1"; then
         return 1
     fi
-    local dir=$(__extract_mkdir $1)
+    local dir=$(__extract_mkdir "$1")
     cd $dir
     case "$1" in
         *.rpm)
