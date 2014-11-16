@@ -6,10 +6,10 @@
 	cim = commit --cleanup=default -m
 	chdate = !sh -c 'git commit --amend --date=\"$(date +\"%a %b %d %H:%M %Y %z\")\"'
 	# Staging area
-    unstage = reset HEAD --
+        unstage = reset HEAD --
 	unadd = reset HEAD --
 	# Cherry pick
-    cp = cherry-pick
+        cp = cherry-pick
 	# Rebase interactive
 	rb = rebase -i
 	# Checkout
@@ -28,7 +28,9 @@
 	sdiff = diff --cached
 	fdiff = diff --stat
 	# Pull
-    pullsubs = submodule foreach "git pull origin master"
+        pullsubs = submodule foreach "git pull origin master"
+        # Remotes
+        r = remote -v
 [color]
 	ui = auto
 [include]
