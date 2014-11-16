@@ -103,7 +103,7 @@ command_update()
     git --git-dir="$XCONFIG_ROOT/.git" pull origin master
     if [ $? -eq 0 ] || [ "$1" = "-f" ]; then
         for r in "$XCONFIG_RESOURCES/"*; do
-            __install_resource $r
+            __install_resource $(basename $r)
         done
     fi
 }
