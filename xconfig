@@ -101,7 +101,7 @@ command_update()
     touch "$XCONFIG_UPTSFILE"
     __pr_info "Update xconfig"
     git --git-dir="$XCONFIG_ROOT/.git" pull origin master
-    if [ $? -eq 0 ]; then
+    if [ $? -eq 0 ] || [ "$1" = "-f" ]; then
         for r in "$XCONFIG_RESOURCES/"*; do
             __install_resource $r
         done
