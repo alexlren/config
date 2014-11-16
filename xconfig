@@ -124,7 +124,7 @@ command_uninstall()
 
 help_help()
 {
-    __pr_help help Print this help
+    __pr_help "help [ command ]" Print this help
 }
 
 help_list()
