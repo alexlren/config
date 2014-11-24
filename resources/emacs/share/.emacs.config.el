@@ -134,6 +134,8 @@
 (space-indent-mode t)
 ;; Whitespace only for programming
 (add-hook 'prog-mode-hook 'whitespace-mode)
+;; Remove time from status bar
+(display-time-mode 0)
 
 ;;-----------------------------------
 ;; KEY SHORTCUTS
