@@ -157,28 +157,29 @@ extract()
         return 1
     fi
     local dir=$(__extract_mkdir "$1")
+    local fullpath=$(realpath "$1")
     cd $dir
     case "$1" in
         *.rpm)
-            rpm2cpio "../$1" | cpio -idmv
+            rpm2cpio "$fullpath" | cpio -idmv
             ;;
         *.tar.bz2)
-            tar xjvf "../$1"
+            tar xjvf "$fullpath"
             ;;
         *.tar.xz)
-            tar xJvf "../$1"
+            tar xJvf "$fullpath"
             ;;
         *.tar.gz|*.tgz)
-            tar xzvf "../$1"
+            tar xzvf "$fullpath"
             ;;
         *.zip)
-            unzip "../$1"
+            unzip "$fullpath"
             ;;
         *.rar)
-            unrar e "../$1"
+            unrar e "$fullpath"
             ;;
         *)
-            __print_err "$1 is an unsupported archive"
+            __print_err "$(basename $1) is an unsupported archive"
             cd -
             rm -rf "$dir"
             ;;
