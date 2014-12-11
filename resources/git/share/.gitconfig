@@ -22,7 +22,7 @@
 	# Logs
 	history = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s' --no-merges --reverse
 	lo = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s'
-  	l = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s' -10
+	l = !sh -c 'git log --pretty=format:\"%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s\" -10 $* | cat && echo' -
 	last = log --pretty=format:'%Cblue%h%d%Creset %ar %Cgreen%an%Creset %s' -1 HEAD
 	# Status
 	sdiff = diff --cached
