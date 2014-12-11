@@ -403,3 +403,8 @@ list_func()
     functions | grep -E '^[a-zA-Z][a-zA-Z_]+ \(\) \{$' | sed -r 's/^([^ ]+) .*$/\1/' | tr '\n' ' '
     echo
 }
+
+ipti()
+{
+    sudo iptables -nL $* --line-numbers
+}
