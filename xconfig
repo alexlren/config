@@ -100,7 +100,7 @@ command_update()
     fi
     __pr_info "Update xconfig"
     cd "$XCONFIG_ROOT"
-    git pull origin
+    git pull origin master
     cd -
     if [ $? -eq 0 ] || [ "$1" = "-f" ]; then
         for r in "$XCONFIG_RESOURCES/"*; do
