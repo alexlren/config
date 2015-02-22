@@ -288,6 +288,11 @@ set_proxy()
     export all_proxy="$line"
 }
 
+unset_proxy()
+{
+    unset http_proxy https_proxy ftp_proxy all_proxy
+}
+
 scan()
 {
     local opts="-sS -O"
