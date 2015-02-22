@@ -295,22 +295,15 @@ unset_proxy()
 
 scan()
 {
-    local opts="-sS -O"
-    local target=""
-    while [ $# -gt 0 ]; do
-        if [[ "$1" =~ "-[^ ]+" ]]; then
-            opts="$opts $1"
-        else
-            target="$1"
-        fi
-        shift
-    done
-    if [ "$target" = "" ]; then
+    local target
+    if [ $# -ne 0 ]; then
+        target="$1"
+    else
         local ifc=$(route -n | grep '^0\.0\.0\.0' | awk '{ print $8 }')
         local ipaddr=$(ifconfig $ifc | egrep -o 'inet [^ ]+' | awk '{ print $2 }')
         target=$(echo $ipaddr | cut -d'.' -f1-3).0/23
     fi
-    sudo nmap $opts $target
+    sudo nmap -sS -O $target
 }
 
 erase_disk()
