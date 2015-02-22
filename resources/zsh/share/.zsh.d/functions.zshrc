@@ -26,6 +26,21 @@ __file_exists()
     return 0
 }
 
+__read_ans()
+{
+    local ans
+    echo -n "$* " 1>&2
+    read ans
+    echo $ans
+}
+
+__yesno()
+{
+    local ans=$(__read_ans "$* [y/N]")
+    ([ "$ans" = "y" ] || [ "$ans" = "Y" ]) && return 0
+    return 1
+}
+
 s()
 {
     if [ $# -eq 1 ]; then
