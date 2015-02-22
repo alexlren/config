@@ -10,12 +10,20 @@ __print_err()
 
 __expected_arg()
 {
-    __print_err "Expected $1 arguments but got $2"
+    if [ $2 -lt $1 ]; then
+        __print_err "$funcstack[2]: Expected at least $1 arguments, got $2"
+        return 1
+    fi
+    return 0
 }
 
 __file_exists()
 {
-    test -e "$1" || __print_err "$1: No such file or directory"
+    if [ ! -e "$1" ]; then
+        __print_err "$funcstack[2]: Cannot find \`$1': No such file or directory"
+        return 1
+    fi
+    return 0
 }
 
 s()
@@ -42,10 +50,7 @@ si()
 
 __hl()
 {
-    if [ $# -eq 1 ]; then
-        __expected_arg 1 0
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     local opts=$1
     local pattern=$2
     shift
@@ -64,10 +69,7 @@ hlf()
 
 __xgrep()
 {
-    if [ $# -eq 0 ]; then
-        __expected_arg 1 0
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     local opts pattern grpath
     while [ $# -ne 0 ] && [[ "$1" =~ '^-[^ ]+' ]]; do
         opts="$opts $1"
@@ -95,10 +97,7 @@ gri()
 
 bak()
 {
-    if [ $# -eq 0 ]; then
-        __expected_arg 1 0
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     for fd in $*; do
         if [ -e $fd ]; then
             mv -v $fd{,.bak}
@@ -108,10 +107,7 @@ bak()
 
 rst()
 {
-    if [ $# -eq 0 ]; then
-        __expected_arg 1 0
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     local bn
     for fd in $*; do
         if [ -e $fd ]; then
@@ -125,10 +121,7 @@ rst()
 
 reln()
 {
-    if [ $# -ne 2 ]; then
-        __expected_arg 2 $#
-        return 1
-    fi
+    __expected_arg 2 $# || return 1
     if [ -L "$2" ]; then
         rm -f "$2"
     fi
@@ -145,17 +138,12 @@ __extract_mkdir()
 
 extract()
 {
-    if [ $# -ne 1 ]; then
-        __expected_arg 1 $#
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     if [ ! -w . ]; then
         __print_err "Cannot extract tarball here"
         return 1
     fi
-    if ! __file_exists "$1"; then
-        return 1
-    fi
+    __file_exists "$1" || return 1
     local dir=$(__extract_mkdir "$1")
     local fullpath=$(realpath "$1")
     cd $dir
@@ -188,13 +176,8 @@ extract()
 
 tarball()
 {
-    if [ $# -eq 0 ]; then
-        __expected_arg 1 0
-        return 1
-    fi
-    if ! __file_exists "$1"; then
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
+    __file_exists "$1" || return 1
     local tn="tar.xz:tar cJvf;tar.bz2:tar cjvf;tar.gz:tar czvf;zip:zip"
     local i ty choice create tarname
     echo "Which type of tarball? "
@@ -230,13 +213,8 @@ tarball()
 
 lst()
 {
-    if [ $# -ne 1 ]; then
-        __expected_arg 1 $#
-        return 1
-    fi
-    if ! __file_exists "$1"; then
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
+    __file_exists "$1" || return 1
     case "$1" in
         *.tar.*)
             tar tf "$1"
@@ -264,10 +242,7 @@ reload()
 
 nkill()
 {
-    if [ $# -ne 1 ]; then
-        __expected_arg 1 $#
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     killall $1
     [ $? -eq 0 ] && return 0
     killall -9 $1
@@ -325,10 +300,7 @@ scan()
 
 erase_disk()
 {
-    if [ $# -ne 1 ]; then
-        __expected_arg 1 $#
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
     local drive=${1##/dev/}
     if [ ! -b "/dev/$drive" ]; then
         __print_err "$1 is not a valid drive"
@@ -344,10 +316,8 @@ erase_disk()
 
 mount_enc()
 {
-    if [ $# -ne 2 ]; then
-        __expected_arg 2 $#
-        return 1
-    fi
+    __expected_arg 2 $# || return 1
+    __file_exists "$1" || return 1
     sudo cryptsetup open $1 $2
     sudo mkdir -p /mnt/$2
     sudo mount /dev/mapper/$2 /mnt/$2
@@ -355,10 +325,9 @@ mount_enc()
 
 umount_enc()
 {
-    if [ $# -ne 1 ]; then
-        __expected_arg 1 $#
-        return 1
-    fi
+    __expected_arg 1 $# || return 1
+    __file_exists "/dev/mapper/$1" || return 1
+    __file_exists "/dev/$1" || return 1
     sudo umount /dev/mapper/$1
     sudo cryptsetup close $1
     sudo rm -rf /mnt/$1
