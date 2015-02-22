@@ -257,7 +257,7 @@ nkill()
     killall -9 $1
 }
 
-setup_proxy()
+set_proxy()
 {
     local hostname port username password line
     while [ -z "$hostname" ]; do
@@ -279,6 +279,7 @@ setup_proxy()
     if [ ! -z "$port" ]; then
         line="$line:$port"
     fi
+    echo
     echo -n "Setup proxy: "
     echo $line | sed -r 's#(http://[^:]+):[^@]+(@.*)#\1\2#'
     export http_proxy="$line"
