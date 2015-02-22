@@ -4,7 +4,7 @@
 
 __print_err()
 {
-    echo -e "[33;00;31m$*[0m" 1>&2
+    echo -e "$*" 1>&2
     return 1
 }
 
