@@ -402,3 +402,50 @@ ipti()
 {
     sudo iptables -nL $* --line-numbers
 }
+
+encrypt()
+{
+    __expected_arg 1 $# || return 1
+    __file_exists "$1" || return 1
+    local infile=$1
+    local outfile=$infile.gpg
+    if [ -d "$infile" ]; then
+        local indir=$(dirname "$infile")
+        tar -C $indir -czf "$infile.tar.gz" "$(basename $infile)"
+        rm -rf "$infile" >/dev/null
+        infile=$infile.tar.gz
+        outfile=$infile.gpg
+    fi
+    if [ $# -gt 1 ]; then
+        outfile=$2
+    fi
+    echo "Encrypting $1 into $outfile"
+    gpg --cipher-algo BLOWFISH --output "$outfile" --symmetric "$infile"
+    rm -f "$infile" >/dev/null
+}
+
+decrypt()
+{
+    __expected_arg 1 $# || return 1
+    __file_exists "$1" || return 1
+    local infile=$1
+    local outfile
+    if [ $# -gt 1 ]; then
+        outfile=$2
+    elif [ "${infile##*.}" = "gpg" ]; then
+        outfile=${infile%%.gpg}
+    else
+        __print_err "$infile does not contain a .gpg extension"
+        __expected_arg 2 $#
+        return 1
+    fi
+    gpg --output "$outfile" --decrypt "$infile"
+    if ! [ "${outfile%%.tar.gz}" = "$outfile" ]; then
+        local outdir=$(dirname "$outfile")
+        tar -C "$outdir" -xzf "$outfile"
+        rm -f "$outfile" >/dev/null
+        outfile=${outfile%%.tar.gz}
+    fi
+    echo "Decrypting $infile into $outfile"
+    rm -f "$infile" >/dev/null
+}
