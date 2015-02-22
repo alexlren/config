@@ -130,8 +130,8 @@ reln()
 
 __extract_mkdir()
 {
-    local ext=$(echo $1 | rev | cut -d. -f1 | rev)
-    local dir=$(basename $1 .$ext)
+    local bfile=$(basename $1)
+    local dir=${bfile%.*}
     mkdir -p "$dir"
     echo "$dir"
 }
@@ -159,6 +159,15 @@ extract()
             ;;
         *.tar.gz|*.tgz)
             tar xzvf "$fullpath"
+            ;;
+        *.tar)
+            tar xvf "$fullpath"
+            ;;
+        *.gz)
+            gunzip "$fullpath"
+            ;;
+        *.bz2)
+            bunzip2 "$fullpath"
             ;;
         *.zip)
             unzip "$fullpath"
