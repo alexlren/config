@@ -332,9 +332,11 @@ erase_disk()
     local disk_size=$(df -B1 /dev/$drive | tail -n1 | tr -s ' ' | cut -d' ' -f2)
     local phys_block_size=$(cat /sys/block/$drive/queue/physical_block_size)
     local num_blocks=$(($disk_size / $phys_block_size))
-
-    openssl enc -aes-256-ctr -pass pass:"$(dd if=/dev/random bs=128 count=1 2>/dev/null | base64)" -nosalt </dev/zero \
-        | pv -bartpes $disk_size | sudo dd bs=$phys_block_size count=$num_blocks of=/dev/$drive
+    echo "/dev/$drive: Size=$disk_size, Block size=$phys_block_size, Number of blocks=$num_blocks"
+    if __yesno "Erasing /dev/$drive?"; then
+        openssl enc -aes-256-ctr -pass pass:"$(dd if=/dev/random bs=128 count=1 2>/dev/null | base64)" -nosalt </dev/zero \
+            | pv -bartpes $disk_size | sudo dd bs=$phys_block_size count=$num_blocks of=/dev/$drive
+    fi
 }
 
 mount_enc()
