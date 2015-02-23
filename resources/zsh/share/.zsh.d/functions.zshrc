@@ -455,3 +455,9 @@ ports()
     fi
     netstat -$opts
 }
+
+zsudo()
+{
+    local zshrc=~/.zshrc
+    sudo zsh -i -c "source $zshrc"'; eval "$0" "$@"' "$@"
+}
