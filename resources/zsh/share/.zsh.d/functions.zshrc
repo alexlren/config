@@ -434,3 +434,24 @@ decrypt()
     echo "Decrypting $infile into $outfile"
     rm -f "$infile" >/dev/null
 }
+
+ports()
+{
+    local opts="nelp"
+    if [ $# -ne 0 ]; then
+        case $1 in
+            tcp)
+                opts="${opts}t"
+                ;;
+            udp)
+                opts="${opts}u"
+                ;;
+            *)
+                opts="${opts}tu"
+                ;;
+        esac
+    else
+        opts="${opts}tu"
+    fi
+    netstat -$opts
+}
