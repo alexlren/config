@@ -63,51 +63,36 @@ si()
     fi
 }
 
-__hl()
-{
-    __expected_arg 1 $# || return 1
-    local opts=$1
-    local pattern=$2
-    shift
-    grep $opts "$pattern|\$" $*
-}
-
 hl()
 {
-    __hl -EiIR $*
+    __expected_arg 1 $# || return 1
+    local pattern="$1"
+    shift
+    grep -EIRi "$pattern|\$" ${*:-.}
 }
 
 hlf()
 {
-    __hl -EiIRHn $*
-}
-
-__xgrep()
-{
     __expected_arg 1 $# || return 1
-    local opts pattern grpath
-    while [ $# -ne 0 ] && [[ "$1" =~ '^-[^ ]+' ]]; do
-        opts="$opts $1"
-        shift
-    done
-    pattern=$1
+    local pattern="$1"
     shift
-    if [ $# -eq 0 ]; then
-        grpath=.
-    else
-        grpath=$*
-    fi
-    grep $opts $pattern $grpath
+    grep -EHIRin "$pattern|\$" ${*:-.}
 }
 
 gr()
 {
-    __xgrep -HIRn $*
+    __expected_arg 1 $# || return 1
+    local pattern="$1"
+    shift
+    grep -EHIRn "$pattern" ${*:-.}
 }
 
 gri()
 {
-    __xgrep -HIRin $*
+    __expected_arg 1 $# || return 1
+    local pattern="$1"
+    shift
+    grep -EHIRin "$pattern" ${*:-.}
 }
 
 bak()
