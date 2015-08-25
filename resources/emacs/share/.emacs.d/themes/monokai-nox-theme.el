@@ -3,23 +3,7 @@
 
 (custom-theme-set-variables
  'monokai-nox
- '(after-save-hook (quote (executable-make-buffer-file-executable-if-script-p)))
- '(ido-auto-merge-work-directories-length -1)
- '(ido-confirm-unique-completion t)
- '(ido-create-new-buffer (quote always))
- '(ido-ignore-buffers (quote ("\\`\\*breakpoints of.*\\*\\'" "\\`\\*stack frames of.*\\*\\'" "\\`\\*gud\\*\\'" "\\`\\*locals of.*\\*\\'" "\\` ")))
- '(inhibit-startup-screen t)
- '(require-final-newline t)
- '(show-paren-style (quote parenthesis))
- '(speedbar-frame-parameters (quote ((minibuffer) (width . 20) (border-width . 0) (menu-bar-lines . 0) (tool-bar-lines . 0) (unsplittable . t) (set-background-color "black"))))
- '(show-paren-mode t)
- '(ido-everywhere t)
- '(whitespace-style (quote (face tabs spaces trailing space-before-tab newline indentation empty space-after-tab tab-mark)))
-;; '(whitespace-display-mappings (quote ((space-mark 32) (space-mark 160) (tab-mark 9 [187 9] [92 9]))))
- '(whitespace-indentation-regexp (quote ("^	*\\(\\( \\{1\\}\\)+\\)[^
-	]" . "^ *\\(	+\\)[^
-]")))
- '(whitespace-line-column 80))
+)
 
 (custom-theme-set-faces
  'monokai-nox
