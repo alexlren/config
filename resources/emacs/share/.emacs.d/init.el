@@ -383,6 +383,7 @@
 (add-to-list 'auto-mode-alist '("\\.dust$" . web-mode))
 (add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
 (add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
+(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
 
 (add-hook 'prog-mode-hook
           (lambda ()
