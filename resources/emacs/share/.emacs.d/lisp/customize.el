@@ -53,7 +53,7 @@
  '(tool-bar-mode nil)
  '(transient-mark-mode t)
  '(truncate-partial-width-windows nil)
- '(web-mode-auto-close-style 2)
+ '(web-mode-auto-close-style 1)
  '(web-mode-enable-auto-closing t)
  '(web-mode-enable-auto-opening t)
  '(web-mode-enable-auto-quoting t)
