@@ -3,9 +3,9 @@
 ;;; Code:
 (add-to-list 'load-path (or (file-name-directory #$) (car load-path)))
 
-;;;### (autoloads nil "auto-complete" "auto-complete.el" (21980 14050
-;;;;;;  964152 38000))
-;;; Generated autoloads from auto-complete.el
+;;;### (autoloads nil "auto-complete" "../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete.el"
+;;;;;;  "c32d5307269c802f8eda704d1e241ca6")
+;;; Generated autoloads from ../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete.el
 
 (autoload 'auto-complete "auto-complete" "\
 Start auto-completion at current point.
@@ -40,9 +40,9 @@ See `auto-complete-mode' for more information on Auto-Complete mode.
 
 ;;;***
 
-;;;### (autoloads nil "auto-complete-config" "auto-complete-config.el"
-;;;;;;  (21980 14051 194151 589000))
-;;; Generated autoloads from auto-complete-config.el
+;;;### (autoloads nil "auto-complete-config" "../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete-config.el"
+;;;;;;  "205b49128f4fe43282d93f05c5384575")
+;;; Generated autoloads from ../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete-config.el
 
 (autoload 'ac-config-default "auto-complete-config" "\
 
@@ -51,8 +51,11 @@ See `auto-complete-mode' for more information on Auto-Complete mode.
 
 ;;;***
 
-;;;### (autoloads nil nil ("auto-complete-pkg.el") (21980 14051 215013
-;;;;;;  144000))
+;;;### (autoloads nil nil ("../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete-autoloads.el"
+;;;;;;  "../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete-config.el"
+;;;;;;  "../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete-pkg.el"
+;;;;;;  "../../../../../../../../home/shaoner/.emacs.d/elpa/auto-complete-20150618.1949/auto-complete.el")
+;;;;;;  (22039 56308 289834 135000))
 
 ;;;***
 
