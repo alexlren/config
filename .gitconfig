@@ -1,0 +1,56 @@
+[user]
+        name = Alex Laurent
+        email = shaoner@pm.me
+[alias]
+	# Commit
+	ci = commit --cleanup=default
+	recommit = commit --cleanup=default --amend
+	reci = recommit
+	cim = commit --cleanup=default -m
+	chdate = !sh -c 'git commit --amend --date=\"$(date +\"%a %b %d %H:%M %Y %z\")\"'
+	# Staging area
+        unstage = reset HEAD --
+	unadd = reset HEAD --
+	# Cherry pick
+        cp = cherry-pick
+	# Rebase interactive
+	rb = rebase
+        rbi = rb -i
+	# Checkout
+  	co = checkout
+	# Status
+	st = status -s
+	# Branch
+	br = branch --verbose --abbrev
+	bra = branch -a --verbose --abbrev
+	# Logs
+	history = log --pretty=format:'%Cblue%h%Cred%d%Creset %ar %Cgreen%an%Creset %s' --no-merges --reverse
+	lo = log --color --pretty=format:'%Cblue%h%C(yellow)%d%Creset | %s | %C(green)%an%Creset | %cr'
+	l = lo -10
+	lg = lo --graph
+	# Status
+	sdiff = diff --cached
+	fdiff = diff --stat
+	# Pull
+        pullsubs = submodule foreach "git pull origin master"
+        # Remotes
+        r = remote -v
+
+        # Update old commits
+        # git change-commits GIT_AUTHOR_EMAIL "old@email" "new@email"
+        # git change-commits GIT_AUTHOR_NAME "old name" "new name"
+	change-commits = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f"
+[color]
+	ui = auto
+[core]
+	editor = emacsclient -a \"\" -t
+	deltaBaseCacheLimit = 1G
+[merge]
+	tool = meld
+[filter "lfs"]
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+	process = git-lfs filter-process
+	required = true
+[diff "sopsdiffer"]
+	textconv = sops -d
