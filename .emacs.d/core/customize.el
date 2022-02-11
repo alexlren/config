@@ -35,7 +35,7 @@
  '(nlinum-format "%d ")
  '(normal-erase-is-backspace nil)
  '(package-selected-packages
-   '(multiple-cursors magit auto-complete bind-key company csharp-mode elpy js2-mode lua-mode nlinum omnisharp php-mode rust-mode tide typescript-mode use-package web-mode xcscope yaml-mode flycheck flycheck-rust company-racer racer flymake-eslint idomenu))
+   '(helm multiple-cursors magit auto-complete bind-key company csharp-mode elpy js2-mode lua-mode nlinum omnisharp php-mode rust-mode tide typescript-mode use-package web-mode xcscope yaml-mode flycheck flycheck-rust company-racer racer flymake-eslint idomenu))
  '(require-final-newline t)
  '(selection-coding-system 'compound-text-with-extensions)
  '(show-paren-mode t)

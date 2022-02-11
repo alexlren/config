@@ -1,13 +1,6 @@
-;; =========================================
-;;
-;; ========== Emacs configuration ==========
-;;
-;; =========================================
-
-
-;; --------------------
-;; INIT
-;; --------------------
+;; #############################################################################
+;; # EMACS CONFIGURATION
+;; #############################################################################
 
 ;; Enable byte compilation before loading anything
 (custom-set-variables
@@ -24,507 +17,57 @@
    t)
     (package-initialize))
 
+;; Add use-package
+(eval-when-compile
+  (require 'use-package))
+
+;; Install packages automatically
+(require 'use-package-ensure)
+(setq use-package-always-ensure t)
+
 ;; Load custom variables
-(setq custom-file "~/.emacs.d/lisp/customize.el")
+(setq custom-file "~/.emacs.d/core/customize.el")
 (load custom-file)
 
-;; --------------------
-;; FUNCTIONS
-;; --------------------
+;; Load extra utils functions
+(load "~/.emacs.d/core/utils.el")
 
-(defun insert-header-guard ()
-  (interactive)
-  (save-excursion
-    (when (buffer-file-name)
-      (let*
-          ((name (file-name-nondirectory buffer-file-name))
-           (macro (replace-regexp-in-string
-                   "\\." "_"
-                   (replace-regexp-in-string
-                    "-" "_"
-                    (upcase name)))))
-        (goto-char (point-min))
-        (insert "#ifndef " macro "\n")
-        (insert "# define " macro "\n\n")
-        (insert "\n\n#endif /* !" macro " */\n")))))
-
-(defun insert-shebang (path)
-  (interactive)
-  (save-excursion
-    (goto-char (point-min))
-    (insert "#! " path  "\n\n")
-    (save-buffer)
-    (call-process "chmod" nil t nil "+x" (buffer-file-name))))
-
-(defun tab-indent-mode (default)
-  (let (setx)
-    (if default
-        (setq setx 'set-default)
-      (setq setx 'set))
-    (funcall setx 'indent-tabs-mode t)
-    (funcall setx 'c-basic-offset 8)
-    (funcall setx 'sh-basic-offset 8)))
-
-(defun space-indent-mode (default)
-  (let (setd)
-    (if default
-        (setq setx 'set-default)
-      (setq setx 'set))
-    (funcall setx 'indent-tabs-mode nil)
-    (funcall setx 'c-basic-offset 4)
-    (funcall setx 'sh-basic-offset 4)))
-
-(defun toggle-indent-mode ()
-  (interactive)
-  (if indent-tabs-mode
-      (progn
-        (message "Space mode")
-        (space-indent-mode nil))
-    (progn
-      (message "Tab mode")
-      (tab-indent-mode nil))))
-
-(defun global-space-indent ()
-  (interactive)
-  (space-indent-mode t)
-  (space-indent-mode nil))
-
-(defun local-space-indent ()
-  (interactive)
-  (apply-partially 'space-indent-mode nil))
-
-(defun global-tab-indent ()
-  (interactive)
-  (tab-indent-mode t)
-  (tab-indent-mode nil))
-
-(defun local-tab-indent ()
-  (interactive)
-  (apply-partially 'tab-indent-mode nil))
-
-;; --------------------
-;; PARAMETERS
-;; --------------------
+;; For additional custom addons
+(add-to-list 'load-path "~/.emacs.d/lisp")
 
 ;; Set 'y or n' instead of 'yes or no'
 (fset 'yes-or-no-p 'y-or-n-p)
+
 ;; Gdb
 (setq-default gdb-many-windows t)
-;; Compilation window
 (setq compilation-window-height 12)
 (setq compilation-scroll-output t)
-;; Enable upcase
-(put 'upcase-region 'disabled nil)
-;; Indentation
+
+;; Default indentation
 (space-indent-mode t)
-;; Whitespace only for programming
+
+;; Enable upcase/downcase (disabled by default)
+(put 'downcase-region 'disabled nil)
+(put 'upcase-region 'disabled nil)
+
+;; Show whitespace (like tabs) in programming mode
 (add-hook 'prog-mode-hook 'whitespace-mode)
-;; Disable ring bell
+
+;; Disable ring bell because it's fucking annoying
 (setq ring-bell-function 'ignore)
 
-;; --------------------
-;; KEYS
-;; --------------------
-
-;; Remap escape sequences to correct keybindings
-(defun portable-term-setup-hook ()
-  (define-key function-key-map "\e[1;3A" [M-up])
-  (define-key function-key-map "\e[1;3B" [M-down])
-  (define-key function-key-map "\e[1;3C" [M-right])
-  (define-key function-key-map "\e[1;3D" [M-left])
-  (define-key function-key-map "\e[1;5A" [C-up])
-  (define-key function-key-map "\e[1;5B" [C-down])
-  (define-key function-key-map "\e[1;5C" [C-right])
-  (define-key function-key-map "\e[1;5D" [C-left]))
-(add-hook 'term-setup-hook 'portable-term-setup-hook)
-;; Replace
-(global-set-key (kbd "C-r") 'replace-string)
-(global-set-key (kbd "C-c r") 'query-replace-regexp)
-;; Search
-(global-set-key (kbd "C-s") 'isearch-forward-regexp)
-(define-key isearch-mode-map (kbd "C-n") 'isearch-repeat-forward)
-(define-key isearch-mode-map (kbd "C-p") 'isearch-repeat-backward)
-;; Undo
-;;(global-set-key (kbd "C-q") 'undo)
-;; Move to windows
-(windmove-default-keybindings 'meta)
-(when (fboundp 'windmove-default-keybindings)
-  (windmove-default-keybindings))
-
-;; (global-set-key [M-up] 'windmove-up)
-;; (global-set-key [M-down] 'windmove-down)
-;; (global-set-key [M-right] 'windmove-right)
-;; (global-set-key [M-left] 'windmove-left)
-;; Goto line
-(global-set-key (kbd "M-l") 'goto-line)
-;; Split windows
-(global-set-key (kbd "<f1>") 'delete-other-windows)
-(global-set-key (kbd "<f2>") 'split-window-horizontally)
-(global-set-key (kbd "<f3>") 'split-window-vertically)
-(global-set-key (kbd "C-x |") 'split-window-horizontally)
-(global-set-key (kbd "C-x \-") 'split-window-vertically)
-;; Style
-(global-set-key (kbd "<f4>") 'toggle-indent-mode)
-(global-set-key (kbd "C-x <f4>") 'whitespace-mode)
-;; Compile
-(global-set-key (kbd "<f5>") 'compile)
-(global-set-key (kbd "C-x <f5>") 'recompile)
-;; Cscope
-(global-set-key (kbd "<f9>") 'cscope-set-initial-directory)
-(global-set-key (kbd "C-x <f9>") 'cscope-create-list-of-files-to-index)
-(global-set-key (kbd "<f10>") 'cscope-find-this-symbol)
-(global-set-key (kbd "C-x <f10>") 'cscope-find-global-definition)
-(global-set-key (kbd "<f11>") 'cscope-prev-symbol)
-(global-set-key (kbd "<f12>") 'cscope-next-symbol)
-;; Imenu
-(global-set-key (kbd "M-,") 'idomenu)
-;; Comments
-(global-set-key (kbd "C-c c") 'comment-or-uncomment-region)
-;; C keys
-(add-hook 'c-mode-hook
-          (lambda ()
-            ;; Gdb
-            (local-set-key (kbd "<f7>") 'gdb))
-          )
-
-;; --------------------
-;; CODING
-;; --------------------
-
-;; C
+;; Default formatting style
 (setq c-default-style "linux")
-;;(setq c-syntactic-indentation nil)
 
-;; Header guard
-(add-hook 'find-file-hooks
-          (lambda ()
-            (when (and (memq major-mode '(c-mode c++-mode)) (equal (point-min) (point-max)) (string-match ".*\\.hh?" (buffer-file-name)))
-              (insert-header-guard)
-              (forward-line 4))))
-
-;; Shebangs
-(add-hook 'sh-mode-hook
-          (lambda ()
-            (when (equal (point-min) (point-max))
-              (insert-shebang "/bin/sh")
-              (goto-char (point-max)))))
-(add-hook 'perl-mode-hook
-          (lambda ()
-            (when (equal (point-min) (point-max))
-              (insert "use strict;\nuse warnings;\n\n")
-              (insert-shebang "/usr/bin/env perl")
-              (goto-char (point-max)))))
-(add-hook 'awk-mode-hook
-          (lambda ()
-            (when (equal (point-min) (point-max))
-              (insert-shebang "/usr/bin/awk -f")
-              (goto-char (point-max)))))
-;; (add-hook 'python-mode-hook
-;;           (lambda ()
-;;             (when (equal (point-min) (point-max))
-;;               (insert-shebang "/usr/bin/env python")
-;;               (goto-char (point-max)))))
-
-;; Ignore some buffers
-(progn
-  (defun yic-ignore (str)
-    (or
-     (string-match "\\*Buffer List\\*" str)
-     (string-match "^TAGS" str)
-     (string-match "^\\*Messages\\*$" str)
-     (string-match "^\\*scratch\\*$" str)
-     (string-match "^\\*Completions\\*$" str)
-     (string-match "^ " str)
-
-     (memq str
-           (mapcar
-            (lambda (x)
-              (buffer-name
-               (window-buffer
-                (frame-selected-window x)
-                )
-               )
-              )
-            (visible-frame-list)
-            )
-           )
-     )
-    )
-
-  (defun yic-next (ls)
-    (let* ((ptr ls)
-           bf bn go
-           )
-      (while (and ptr (null go))
-        (setq bf (car ptr)  bn (buffer-name bf))
-        (if (null (yic-ignore bn))
-            (setq go bf)
-          (setq ptr (cdr ptr))
-          )
-        )
-      (if go (switch-to-buffer go))
-      )
-    )
-
-  (defun yic-prev-buffer ()
-    (interactive)
-    (yic-next (reverse (buffer-list)))
-    )
-
-  (defun yic-next-buffer ()
-    (interactive)
-    (bury-buffer (current-buffer))
-    (yic-next (buffer-list))
-    )
-
-  (global-set-key [(control x) (left)] 'yic-prev-buffer)
-  (global-set-key [(control x) (right)] 'yic-next-buffer)
-  (global-set-key [(control x) (control left)] 'yic-prev-buffer)
-  (global-set-key [(control x) (control right)] 'yic-next-buffer)
-  )
-
-(progn
-  (defun kill-region-or-pword (&optional arg)
-    (interactive "p")
-    (if (use-region-p)
-        (kill-region (mark) (point))
-      (let (count)
-        (dotimes (count arg)
-          (if (bolp)
-              (delete-char 1)
-            (kill-region (max (save-excursion (backward-word)(point))
-                              (line-beginning-position))
-                         (point)))))))
-
-  (global-set-key "\C-w" 'kill-region-or-pword)
-  )
-
-(defun check-large-file-hook ()
-  "If a file is over a given size, turn off syntax highlighting"
-  (when (> (buffer-size) (* 10240 1024))
-    (buffer-disable-undo)
-    (fundamental-mode)))
-
-(add-hook 'find-file-hooks 'check-large-file-hook)
-
-;; Python
-(use-package elpy
-  :ensure t
-  :init
-  (elpy-enable))
-
-(eval-after-load "elpy"
- '(progn
-    (define-key elpy-mode-map (kbd "<M-down>") nil)
-    (define-key elpy-mode-map (kbd "<M-up>") nil)
-    (define-key elpy-mode-map (kbd "<M-left>") nil)
-    (define-key elpy-mode-map (kbd "<M-right>") nil)))
-
-(when (load "flycheck" t t)
-  (setq elpy-modules (delq 'elpy-module-flymake elpy-modules))
-  (add-hook 'elpy-mode-hook 'flycheck-mode))
-
-;;-----------------------------------
-;; MISC
-;;-----------------------------------
-
-;; Lines which contain `FIXME:'
-(setq font-lock-fixme1-face (make-face 'font-lock-fixme1-face)
-      font-lock-fixme0-face (make-face 'font-lock-fixme0-face))
-(set-face-foreground 'font-lock-fixme1-face "yellow")
-(set-face-foreground 'font-lock-fixme0-face "blue")
-
-(set-face-bold 'font-lock-fixme0-face t)
-(set-face-underline 'font-lock-fixme0-face t)
-(font-lock-add-keywords 'c++-mode
-                        `(("\\<\\(FIXME:\\) \\(.*$\\)" 1 font-lock-fixme0-face prepend)
-                          ("\\<\\(FIXME:\\) \\(.*$\\)" 2 font-lock-fixme1-face t)))
-(font-lock-add-keywords 'c-mode
-                        `(("\\<\\(FIXME:\\) \\(.*$\\)" 1 font-lock-fixme0-face prepend)
-                          ("\\<\\(FIXME:\\) \\(.*$\\)" 2 font-lock-fixme1-face t)))
-
-;; Lines which contain `TODO:'
-(setq font-lock-todo0-face (make-face 'font-lock-todo0-face)
-      font-lock-todo1-face (make-face 'font-lock-todo1-face))
-(set-face-foreground 'font-lock-todo1-face "green")
-(set-face-foreground 'font-lock-todo0-face "red")
-(set-face-bold 'font-lock-todo0-face t)
-(set-face-bold 'font-lock-todo1-face t)
-(set-face-underline 'font-lock-todo0-face t)
-(font-lock-add-keywords 'c++-mode
-                        `(("\\<\\(TODO:\\) \\(.*$\\)" 1 font-lock-todo0-face prepend)
-                          ("\\<\\(TODO:\\) \\(.*$\\)" 2 font-lock-todo1-face t)))
-(font-lock-add-keywords 'c-mode
-                        `(("\\<\\(TODO:\\) \\(.*$\\)" 1 font-lock-todo0-face prepend)
-                          ("\\<\\(TODO:\\) \\(.*$\\)" 2 font-lock-todo1-face t)))
-
-;; Additional custom addons
-(add-to-list 'load-path "~/.emacs.d/lisp")
-
-;; Color diff
-(eval-after-load 'diff-mode
-  '(progn
-     (set-face-attribute 'diff-added nil :foreground "green4" :background "light")
-     (set-face-attribute 'diff-removed nil :foreground "red2" :background "light")
-     (set-face-attribute 'diff-changed nil :foreground "purple" :background "light")
-     (set-face-attribute 'diff-header nil :foreground "blue" :background "light")))
-
-;; --------------------
-;; THEME
-;; --------------------
-
+;; Theme
 (add-to-list 'custom-theme-load-path "~/.emacs.d/themes")
-(setq nox-theme 'monokai-nox)
-(setq x-theme 'monokai-x)
+(load-theme 'sha1 t)
 
-(if (window-system)
-    (load-theme x-theme t)
-  (load-theme nox-theme t))
+;; Global packages
+(load "~/.emacs.d/core/base.el")
 
-(setq web-mode-content-types-alist
-  '(("jsx" . "\\.js[x]?\\'")))
+;; Keys
+(load "~/.emacs.d/core/keys.el")
 
-
-(add-hook 'prog-mode-hook
-          (lambda ()
-            (font-lock-add-keywords
-             nil
-             '(("^[^\n]\\{80\\}\\(.*\\)$"
-                1 font-lock-warning-face prepend)))))
-
-;;(add-hook 'after-init-hook #'global-flycheck-mode)
-;; (require 'flymake-shell)
-;; (add-hook 'sh-set-shell-hook 'flymake-shell-load)
-
-
-;; use web-mode for .jsx files
-(add-to-list 'auto-mode-alist '("\\.jsx$" . web-mode))
-
-;; http://www.flycheck.org/manual/latest/index.html
-(require 'flycheck)
-
-;; turn on flychecking globally
-(add-hook 'after-init-hook #'global-flycheck-mode)
-
-;; disable jshint since we prefer eslint checking
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(javascript-jshint)))
-
-;; use eslint with web-mode for jsx files
-(flycheck-add-mode 'javascript-eslint 'web-mode)
-
-;; customize flycheck temp file prefix
-(setq-default flycheck-temp-prefix ".flycheck")
-
-;; disable json-jsonlist checking for json files
-(setq-default flycheck-disabled-checkers
-  (append flycheck-disabled-checkers
-    '(json-jsonlist)))
-
-;; use local eslint from node_modules before global
-;; http://emacs.stackexchange.com/questions/21205/flycheck-with-file-relative-eslint-executable
-(defun my/use-eslint-from-node-modules ()
-  (let* ((root (locate-dominating-file
-                (or (buffer-file-name) default-directory)
-                "node_modules"))
-         (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
-                                        root))))
-    (when (and eslint (file-executable-p eslint))
-      (setq-local flycheck-javascript-eslint-executable eslint))))
-(add-hook 'flycheck-mode-hook #'my/use-eslint-from-node-modules)
-(with-eval-after-load 'flycheck
-  (advice-add 'flycheck-eslint-config-exists-p :override (lambda() t)))
-
-;; JSX syntax
-(defadvice web-mode-highlight-part (around tweak-jsx activate)
-  (if (equal web-mode-content-type "jsx")
-    (let ((web-mode-enable-part-face nil))
-      ad-do-it)
-    ad-do-it))
-
-;; TS
-(require 'ansi-color)
-(defun colorize-compilation-buffer ()
-  (ansi-color-apply-on-region compilation-filter-start (point-max)))
-(add-hook 'compilation-filter-hook 'colorize-compilation-buffer)
-
-(defun setup-tide-mode ()
-  (interactive)
-  (tide-setup)
-  (flycheck-mode +1)
-  (setq flycheck-check-syntax-automatically '(save mode-enabled))
-  (eldoc-mode +1)
-  (tide-hl-identifier-mode +1)
-  ;; company is an optional dependency. You have to
-  ;; install it separately via package-install
-  ;; `M-x package-install [ret] company`
-  (company-mode +1))
-
-;; aligns annotation to the right hand side
-(setq company-tooltip-align-annotations t)
-
-(add-hook 'typescript-mode-hook #'setup-tide-mode)
-(put 'downcase-region 'disabled nil)
-
-;; CS
-
-(defun my-csharp-mode-setup ()
-  (omnisharp-mode)
-  (flycheck-mode)
-
-  (setq indent-tabs-mode nil)
-  (setq c-syntactic-indentation t)
-  (c-set-style "ellemtel")
-  (setq c-basic-offset 4)
-  (setq truncate-lines t)
-  (setq tab-width 4)
-  (setq evil-shift-width 4)
-
-  ;csharp-mode README.md recommends this too
-  ;(electric-pair-mode 1)       ;; Emacs 24
-  ;(electric-pair-local-mode 1) ;; Emacs 25
-
-  (local-set-key (kbd "C-c r r") 'omnisharp-run-code-action-refactoring)
-  (local-set-key (kbd "C-c C-c") 'recompile))
-
-(add-hook 'csharp-mode-hook 'my-csharp-mode-setup t)
-
-;; Rust
-(add-hook 'rust-mode-hook #'racer-mode)
-;;(add-hook 'racer-mode-hook #'eldoc-mode)
-(add-hook 'racer-mode-hook #'company-mode)
-
-(require 'rust-mode)
-(define-key rust-mode-map (kbd "TAB") #'company-indent-or-complete-common)
-(setq company-tooltip-align-annotations t)
-
-
-(define-key rust-mode-map (kbd "<f5>") 'rust-run)
-;; --------------------
-;; EXTENSION MODE
-;; --------------------
-
-(add-to-list 'auto-mode-alist '("\\.l$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.y$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.ll$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.yy$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.xcc$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.xhh$" . c++-mode))
-(add-to-list 'auto-mode-alist '("\\.pro$" . sh-mode))
-(add-to-list 'auto-mode-alist '("configure$" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.rb$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("Drakefile$" . ruby-mode))
-(add-to-list 'auto-mode-alist '("\\.php$" . php-mode))
-(add-to-list 'auto-mode-alist '("\\.zshrc$" . sh-mode))
-(add-to-list 'auto-mode-alist '("\\.gitconfig$" . conf-mode))
-(add-to-list 'auto-mode-alist '("\\.less$" . css-mode))
-(add-to-list 'auto-mode-alist '("\\.ect$" . html-mode))
-(add-to-list 'auto-mode-alist '("\\.html$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.dust$" . web-mode))
-;;(add-to-list 'auto-mode-alist '("\\.js\\'" . wen-mode))
-(add-to-list 'auto-mode-alist '("\\.[jt]sx?$" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.scss$" . css-mode))
-(add-to-list 'auto-mode-alist '("\\.yml$" . yaml-mode))
-(add-to-list 'auto-mode-alist '("\\.tsx?$" . typescript-mode))
+;; Languages config & modes
+(load "~/.emacs.d/core/modes.el")

@@ -2,3 +2,6 @@ ac-comphist.dat
 auto-save-list/
 *.elc
 ido.last
+/savefile/
+/session.*
+/elpy
