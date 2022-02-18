@@ -97,7 +97,6 @@
 
 (use-package csharp-mode
   :config
-  (omnisharp-mode)
   (flycheck-mode)
   (setq indent-tabs-mode nil)
   (setq c-syntactic-indentation t)
@@ -109,8 +108,7 @@
 ;;   ;(electric-pair-mode 1)       ;; Emacs 24
 ;;   ;(electric-pair-local-mode 1) ;; Emacs 25
   :mode ("\\.cs$" . csharp-mode)
-  :bind (("<f6>" . omnisharp-run-code-action-refactoring))
-  :after (flycheck omnisharp))
+  :after (flycheck))
 
 ;; -----------------------------------------------------------------------------
 ;; Git
