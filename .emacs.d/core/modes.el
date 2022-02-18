@@ -39,18 +39,19 @@
               (insert-header-guard)
               (forward-line 4))))
 
+(use-package xcscope
+  :bind (("<f9>" . cscope-set-initial-directory)
+         ("C-x <f9>" . cscope-create-list-of-files-to-index)
+         ("<f10>" . cscope-find-this-symbol)
+         ("C-x <f10>" . cscope-find-global-definition)
+         ("<f11>" . cscope-prev-symbol)
+         ("<f12>" . cscope-next-symbol)))
+
 ;; C keys
 (add-hook 'c-mode-hook
           (lambda ()
             ;; Gdb
-            (local-set-key (kbd "<f7>") 'gdb)
-            (local-set-key (kbd "<f9>") 'cscope-set-initial-directory)
-            (local-set-key (kbd "C-x <f9>") 'cscope-create-list-of-files-to-index)
-            (local-set-key (kbd "<f10>") 'cscope-find-this-symbol)
-            (local-set-key (kbd "C-x <f10>") 'cscope-find-global-definition)
-            (local-set-key (kbd "<f11>") 'cscope-prev-symbol)
-            (local-set-key (kbd "<f12>") 'cscope-next-symbol))
-          )
+            (local-set-key (kbd "<f7>") 'gdb)))
 
 ;; Lines which contain `FIXME:'
 (setq font-lock-fixme1-face (make-face 'font-lock-fixme1-face)
