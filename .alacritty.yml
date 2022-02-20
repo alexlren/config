@@ -1,3 +1,5 @@
+env:
+  TERM: xterm-24bits
 window:
   # Window dimensions (changes require restart)
   #
